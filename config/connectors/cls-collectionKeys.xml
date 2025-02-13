@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<services>
+    <cloudstreamsCollectionKeys serviceName="WmCloudStreams.RestVS">
+        <servicesKeys>
+            <keyDetails collectionKey="pub.adobe.experienceplatform_v1.services.largeFile.templates:abortMultipartUpload" connectorServiceName="pub.adobe.experienceplatform_v1.services.largeFile.templates:abortMultipartUpload"/>
+            <keyDetails collectionKey="pub.adobe.experienceplatform_v1.services.largeFile.templates:createBatch" connectorServiceName="pub.adobe.experienceplatform_v1.services.largeFile.templates:createBatch"/>
+            <keyDetails collectionKey="pub.adobe.experienceplatform_v1.services.largeFile.templates:downloadFiles" connectorServiceName="pub.adobe.experienceplatform_v1.services.largeFile.templates:downloadFiles"/>
+            <keyDetails collectionKey="pub.adobe.experienceplatform_v1.services.largeFile.templates:getDatasetFiles" connectorServiceName="pub.adobe.experienceplatform_v1.services.largeFile.templates:getDatasetFiles"/>
+            <keyDetails collectionKey="pub.adobe.experienceplatform_v1.services.largeFile.templates:getDatasetFilesDetails" connectorServiceName="pub.adobe.experienceplatform_v1.services.largeFile.templates:getDatasetFilesDetails"/>
+            <keyDetails collectionKey="pub.adobe.experienceplatform_v1.services.largeFile.templates:initiateMultipartUpload" connectorServiceName="pub.adobe.experienceplatform_v1.services.largeFile.templates:initiateMultipartUpload"/>
+            <keyDetails collectionKey="pub.adobe.experienceplatform_v1.services.largeFile.templates:uploadFilePart" connectorServiceName="pub.adobe.experienceplatform_v1.services.largeFile.templates:uploadFilePart"/>
+            <keyDetails collectionKey="wmadobe.experienceplatform_v1.interactions:getConnectionSpecs" connectorServiceName="wmadobe.experienceplatform_v1.interactions:getConnectionSpecs"/>
+            <keyDetails collectionKey="wmadobe.experienceplatform_v1.interactions:getConnector" connectorServiceName="wmadobe.experienceplatform_v1.interactions:getConnector"/>
+            <keyDetails collectionKey="wmadobe.experienceplatform_v1.interactions:getSchema" connectorServiceName="wmadobe.experienceplatform_v1.interactions:getSchema"/>
+            <keyDetails collectionKey="wmadobe.experienceplatform_v1.interactions:queryAccount" connectorServiceName="wmadobe.experienceplatform_v1.interactions:queryAccount"/>
+            <keyDetails collectionKey="wmadobe.experienceplatform_v1.interactions:queryConnection" connectorServiceName="wmadobe.experienceplatform_v1.interactions:queryConnection"/>
+            <keyDetails collectionKey="wmadobe.experienceplatform_v1.interactions:queryConnectionSpecs" connectorServiceName="wmadobe.experienceplatform_v1.interactions:queryConnectionSpecs"/>
+            <keyDetails collectionKey="wmadobe.experienceplatform_v1.interactions:queryConnector" connectorServiceName="wmadobe.experienceplatform_v1.interactions:queryConnector"/>
+            <keyDetails collectionKey="wmadobe.experienceplatform_v1.interactions:queryDataset" connectorServiceName="wmadobe.experienceplatform_v1.interactions:queryDataset"/>
+            <keyDetails collectionKey="wmadobe.experienceplatform_v1.interactions:queryDatasetView" connectorServiceName="wmadobe.experienceplatform_v1.interactions:queryDatasetView"/>
+            <keyDetails collectionKey="wmadobe.experienceplatform_v1.interactions:querySchema" connectorServiceName="wmadobe.experienceplatform_v1.interactions:querySchema"/>
+            <keyDetails collectionKey="wmadobe.experienceplatform_v1.interactions:stats" connectorServiceName="wmadobe.experienceplatform_v1.interactions:stats"/>
+            <keyDetails collectionKey="wmadobe.experienceplatform_v1.sandboxManagement.lookups:getSBList" connectorServiceName="wmadobe.experienceplatform_v1.sandboxManagement.lookups:getSBList"/>
+        </servicesKeys>
+    </cloudstreamsCollectionKeys>
+</services>

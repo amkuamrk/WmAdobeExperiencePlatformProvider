@@ -1,0 +1,1360 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<rest-connector xmlns="http://www.softwareag.com/cloudstreams/metadata/handler/model" id="com.softwareag.cloudstreams.adobe.experienceplatform_v1" version="1.0" group="Adobe " name="AdobeExperiencePlatform" displayName="Adobe Experience Platform">
+	<connections>
+		<connection type="sagcloud" name="SAG_Connection" displayName="OAuth V2.0 (JWT Token Flow)">
+			<groups>
+				<group type="connection" name="connection" displayName="Connection">
+					<description>Define the required connection configurations to initiate communication with the SaaS provider.</description>
+					<fields>
+						<field isRequired="true" isEncrypted="false" isHidden="false" isArray="false" defaultValue="https://platform.adobe.io" name="cn.providerUrl" displayName="Server URL">
+							<description>The native provider endpoint target for the connection configuration</description>
+						</field>
+						<field defaultValue="300000" name="cn.connectTimeout" displayName="Connection TimeOut"/>
+						<field defaultValue="300000" name="cn.keepAliveInterval" displayName="Keep Alive Interval" isOverride="true"/>
+                        <field defaultValue="300000" name="cn.readTimeout" displayName="Socket Read Timeout"/>
+						<field defaultValue="3" name="cn.retryCount" displayName="Connection Retry Count"/>
+                        <field defaultValue="true" name="cn.retryIfRequestSentOk" displayName="Retry on Response Failure"/>
+						<field defaultValue="true" displayName="Enable SNI" name="cn.enableSNI"/>
+					</fields>
+				</group>
+				<group type="oauth_v20_jwt" name="oauth_v20_jwt" displayName="OAuth V2.0 (JWT Token Flow)">
+					<description>Define configurations needed for the OAuth version 2.0 authentication scheme.</description>
+					<fields>
+						<field name="jwt.header.alg" displayName="Signing with" defaultValue="RS256" isHidden="true" allowedValues="RS256,RS356" modelType="Meta" />
+						<field name="oauth_v20.iss" displayName="Organization ID" />
+						<field name="oauth_v20.sub" displayName="Technical Account ID" />
+						<field name="jwt.claim.aud" displayName="Audience" isRequired="true" modelType="Meta" />
+						<field name="jwt.claim.https://ims-na1.adobelogin.com/s/ent_dataservices_sdk" displayName="Experience Platform Metascope" defaultValue="true" type="boolean" isHidden="true" modelType="Meta" />
+						<field name="jwt.claim.exp" displayName="Expiration Time(mins)" defaultValue="60" modelType="Meta" />
+						<field name="jwt.cx.clientId" displayName="Client ID" isRequired="true" modelType="Meta" />
+						<field name="jwt.cx.clientSecret" displayName="Client Secret" isRequired="true" isEncrypted="true" modelType="Meta" />
+						<field name="jwt.authenticationServerUrl" displayName="Authentication Server URL" isHidden="true" defaultValue="https://ims-na1.adobelogin.com/ims/exchange/jwt" modelType="Meta" />
+						<field name="oauth_v20.accessTokenRefreshCustomESBService" displayName="Refresh Custom ESB Service" defaultValue="wmadobe.experienceplatform_v1.utils.jwtAccessToken:refreshJwtAccessToken" modelType="Advanced" />
+						<field name="jwt.omitPadding" displayName="Omit Padding" defaultValue="true" type="boolean" isHidden="true" modelType="Meta" />
+						<field name="cx.sanbox_name" displayName="Sandbox Name" lookupService="wmadobe.experienceplatform_v1.sandboxManagement.lookups:getSandboxes" isRequired="true"/>
+						<!--field name="cx.sanbox_name" displayName="Sandbox Name" isRequired="true"/-->
+					</fields>
+				</group>
+				<group type="protocol" displayName="Transport Protocol" name="protocol"/>
+				<group type="custom" name="custom" displayName="Custom">
+                    <description>Define any custom configurations specific to the SaaS provider.</description>
+                    <fields>
+                        <field defaultValue="https://dcs.adobedc.net" name="cx.streamingUrl" isRequired="true" displayName="Streaming Server URL"/>
+                    </fields>
+                </group>
+			</groups>
+		</connection>
+	</connections>
+	<services>
+		<service xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="RESTServiceType" endpoint="${cn.providerUrl}" name="catalogAPI" displayName="Catalog API">
+			
+			<documentModel packageName="WmAdobeExperiencePlatformProvider" nsName="wmadobe.experienceplatform_v1.catalogservice.doctypes" useInlineModel="true">
+				<abstractObject name="getAbstractRecord" type="businessObject">
+					<lookup type="boList" ref="wmadobe.experienceplatform_v1.catalogservice.lookups:boList"/>
+					<lookup type="boDescribe" ref="wmadobe.experienceplatform_v1.catalogservice.lookups:boDescribe"/>
+				</abstractObject>
+			</documentModel>
+			<resources>
+				<mappings>
+					<map context="IN" name="apiKey" displayName="apiKey" isRequired="true" isFixed="true">
+						<source type="IDATA">jwt.cx.clientId</source>
+						<target type="HEADER">x-api-key</target>
+					 </map>
+					 <map context="IN" name="org_id" displayName="org_id" isRequired="true"  isFixed="true">
+						<source type="IDATA">oauth_v20.iss</source>
+						<target type="HEADER">x-gw-ims-org-id</target>
+					 </map>
+					 <map context="IN" name="Content_Type" displayName="Content_Type" isRequired="true">
+						<source type="LITERAL">application/json</source>
+						<target type="HEADER">Content-Type</target>
+					 </map>
+					 <map context="IN" name="x_sandbox_name" displayName="x_sandbox_name" isRequired="true" isFixed="true">
+						<source type="IDATA">cx.sanbox_name</source>
+						<target type="HEADER">x-sandbox-name</target>
+					</map>
+				</mappings>
+				
+				<resource method="POST" path="/data/foundation/catalog/{objectName}" type="COMPLEX" name="create" displayName="Create">
+					<description>Create a new object.</description>
+					<mappings>
+						<map isRequired="true" isFixed="true" context="IN" name="objectName" displayName="objectName">
+							<source type="PARAMETER">core.businessObject</source>
+							<target type="PARAMETER">objectName</target>
+						</map>
+					</mappings>
+					<parameters>
+						<parameter name="objectName" isRequired="true" style="URI_CONTEXT">
+							<description>Create selected object information.</description>
+						</parameter>
+						<parameter name="requestDataSource" isRequired="false" style="QUERYSTRING_PARAM">
+							<description>Set to true if you have selected dataset businessObject and want Catalog to create a dataSource on your behalf; otherwise, pass a dataSourceId in the body.</description>
+						</parameter>
+					</parameters>
+					
+					<handler nsName="wmadobe.experienceplatform_v1.catalogservice.interactions.CreateHandler" type="java"/>
+					
+					<request name="record" messageFormatterType="application/json" builderType="application/octet+idataoref" documentRef="wmadobe.experienceplatform_v1.catalogservice.doctypes:record" excludeRoot="true"/>					
+					<responses>
+						 <response name="createResponse" code="200-599" messageFormatterType="application/octet+idataoref" builderType="application/json" documentRef="wmadobe.experienceplatform_v1.catalogservice.doctypes:createResponse" excludeRoot="false"/>
+					</responses>
+				</resource>
+				
+				<resource method="PUT" path="/data/foundation/catalog/{objectName}/{id}" type="COMPLEX" name="update" displayName="Update">
+					<description>Update an existing object by id.</description>
+					<mappings>
+						<map isRequired="true" isFixed="true" context="IN" name="objectName" displayName="objectName">
+							<source type="PARAMETER">core.businessObject</source>
+							<target type="PARAMETER">objectName</target>
+						</map>
+						<map isRequired="false" context="IN" name="if_match" displayName="if_match">
+							<description>Set to verify the valid versions of document to be modified by matching the updated date.</description>
+							<source type="LITERAL"></source>
+							<target type="HEADER">if-match</target>
+						</map>
+						<map isRequired="false" context="IN" name="if_none_match" displayName="if_none_match">
+							<description>Set to verify the invalid versions of document to be modified by matching the updated date.</description>
+							<source type="LITERAL"></source>
+							<target type="HEADER">if-none-match</target>
+						</map>
+						<map isRequired="false" context="IN" name="accept_encoding" displayName="accept_encoding">
+							<description>Used to signal the intent to consume compressed response bodies. Supported encodings: gzip.</description>
+							<source type="LITERAL">gzip</source>
+							<target type="HEADER">accept-encoding</target>
+						</map>						
+					</mappings>
+					<parameters>
+						<parameter name="objectName" isRequired="true" style="URI_CONTEXT">
+							<description>Update selected object information.</description>
+						</parameter>
+						<parameter name="id" isRequired="true" style="URI_CONTEXT">
+							<description>Selected object id.</description>
+						</parameter>
+					</parameters>
+					
+					<handler nsName="wmadobe.experienceplatform_v1.catalogservice.interactions.UpdateHandler" type="java"/>
+					
+					<request name="record" messageFormatterType="application/json" builderType="application/octet+idataoref" documentRef="wmadobe.experienceplatform_v1.catalogservice.doctypes:record" excludeRoot="true"/>					
+					<responses>
+						 <response name="updateResponse" code="200-599" messageFormatterType="application/octet+idataoref" builderType="application/json" documentRef="wmadobe.experienceplatform_v1.catalogservice.doctypes:updateResponse" excludeRoot="false"/>
+					</responses>
+				</resource>
+				
+				<resource method="PATCH" path="/data/foundation/catalog/{objectName}/{id}" type="COMPLEX" name="patch" displayName="Patch">
+					<description>Update one or more attributes of an object specified by id.</description>
+					<mappings>
+						<map isRequired="true" isFixed="true" context="IN" name="objectName" displayName="objectName">
+							<source type="PARAMETER">core.businessObject</source>
+							<target type="PARAMETER">objectName</target>
+						</map>
+						<map isRequired="false" context="IN" name="if_match" displayName="if_match">
+							<description>Set to verify the valid versions of document to be modified by matching the updated date.</description>
+							<source type="LITERAL"></source>
+							<target type="HEADER">if-match</target>
+						</map>
+						<map isRequired="false" context="IN" name="if_none_match" displayName="if_none_match">
+							<description>Set to verify the invalid versions of document to be modified by matching the updated date.</description>
+							<source type="LITERAL"></source>
+							<target type="HEADER">if-none-match</target>
+						</map>
+						<map isRequired="false" context="IN" name="accept_encoding" displayName="accept_encoding">
+							<description>Used to signal the intent to consume compressed response bodies. Supported encodings: gzip.</description>
+							<source type="LITERAL">gzip</source>
+							<target type="HEADER">accept-encoding</target>
+						</map>
+					</mappings>
+					<parameters>
+						<parameter name="objectName" isRequired="true" style="URI_CONTEXT">
+							<description>Patch selected object information.</description>
+						</parameter>
+						<parameter name="id" isRequired="true" style="URI_CONTEXT">
+							<description>Selected object id.</description>
+						</parameter>
+					</parameters>
+					
+					<handler nsName="wmadobe.experienceplatform_v1.catalogservice.interactions.PatchHandler" type="java"/>
+					
+					<request name="record" messageFormatterType="application/json" builderType="application/octet+idataoref" documentRef="wmadobe.experienceplatform_v1.catalogservice.doctypes:record" excludeRoot="true"/>					
+					<responses>
+						 <response name="patchResponse" code="200-599" messageFormatterType="application/octet+idataoref" builderType="application/json" documentRef="wmadobe.experienceplatform_v1.catalogservice.doctypes:patchResponse" excludeRoot="false"/>
+					</responses>
+				</resource>
+				
+				<resource method="DELETE" path="/data/foundation/catalog/{objectName}/{id}" type="COMPLEX" name="deleteRecord" displayName="Delete">
+					<description>Update one or more attributes of an object specified by id.</description>
+					<mappings>
+						<map isRequired="true" isFixed="true" context="IN" name="objectName" displayName="objectName">
+							<source type="PARAMETER">core.businessObject</source>
+							<target type="PARAMETER">objectName</target>
+						</map>
+						<map isRequired="false" context="IN" name="accept_encoding" displayName="accept_encoding">
+							<description>Used to signal the intent to consume compressed response bodies. Supported encodings: gzip.</description>
+							<source type="LITERAL">gzip</source>
+							<target type="HEADER">accept-encoding</target>
+						</map>
+					</mappings>
+					<parameters>
+						<parameter name="objectName" isRequired="true" style="URI_CONTEXT">
+							<description>Patch selected object information.</description>
+						</parameter>
+						<parameter name="id" isRequired="true" style="URI_CONTEXT">
+							<description>Selected object id.</description>
+						</parameter>
+					</parameters>
+					
+					<handler nsName="wmadobe.experienceplatform_v1.catalogservice.interactions.DeleteHandler" type="java"/>
+					
+					<request name="record" messageFormatterType="application/json" builderType="application/octet+idataoref" documentRef="wmadobe.experienceplatform_v1.catalogservice.doctypes:record" excludeRoot="true"/>					
+					<responses>
+						 <response name="deleteResponse" code="200-599" messageFormatterType="application/octet+idataoref" builderType="application/json" documentRef="wmadobe.experienceplatform_v1.catalogservice.doctypes:deleteResponse" excludeRoot="true" dimension="1"/>
+					</responses>
+				</resource>
+				
+				<resource method="POST" path="/data/foundation/catalog/{objectName}/{id}" type="COMPLEX" name="createByID" displayName="Create By ID">
+					<description>Creates a new account or connection.</description>
+					<mappings>
+						<map isRequired="true" isFixed="true" context="IN" name="objectName" displayName="objectName">
+							<source type="PARAMETER">core.businessObject</source>
+							<target type="PARAMETER">objectName</target>
+						</map>						
+						<map isRequired="false" context="IN" name="accept_encoding" displayName="accept_encoding">
+							<description>Used to signal the intent to consume compressed response bodies. Supported encodings: gzip.</description>
+							<source type="LITERAL">gzip</source>
+							<target type="HEADER">accept-encoding</target>
+						</map>
+						<map isRequired="false" context="OUT" name="location" displayName="location">
+							<description>The URI of the newly created resource.</description>
+							<source type="LITERAL"></source>
+							<target type="HEADER">Location</target>
+						</map>
+					</mappings>
+					<parameters>
+						<parameter name="objectName" isRequired="true" style="URI_CONTEXT">
+							<description>Create selected object information.</description>
+						</parameter>
+						<parameter name="id" isRequired="true" style="URI_CONTEXT">
+							<description>Selected object id.</description>
+						</parameter>
+					</parameters>
+					<handler nsName="wmadobe.experienceplatform_v1.catalogservice.interactions.CreateHandler" type="java"/>
+					<request name="record" messageFormatterType="application/json" builderType="application/octet+idataoref" documentRef="wmadobe.experienceplatform_v1.catalogservice.doctypes:record" excludeRoot="true"/>					
+					<responses>
+						 <response name="createResponse" code="200-599" messageFormatterType="application/octet+idataoref" builderType="application/json" documentRef="wmadobe.experienceplatform_v1.catalogservice.doctypes:createResponse" excludeRoot="false"/>
+					</responses>
+				</resource>
+				
+				<resource method="GET" path="/data/foundation/catalog/{objectName}" type="COMPLEX" name="query" displayName="Query">
+					<description>Query records based on criteria.</description>
+					<mappings>
+						<map isRequired="true" isFixed="true" context="IN" name="objectName" displayName="objectName">
+							<source type="PARAMETER">core.businessObject</source>
+							<target type="PARAMETER">objectName</target>
+						</map>
+					</mappings>
+					<parameters>
+						<parameter name="objectName" isRequired="true" isFixed="true" style="URI_CONTEXT">
+							<description>Query selected object information.</description>
+						</parameter>
+					</parameters>
+					<handler nsName="wmadobe.experienceplatform_v1.catalogservice.interactions.GetAllHandler" type="java"/>
+					<responses>
+						<response name="record" code="200-599" messageFormatterType="application/octet+idataoref" builderType="application/json" documentRef="wmadobe.experienceplatform_v1.catalogservice.doctypes:record" excludeRoot="false"/>
+					</responses>
+				</resource>
+
+				<resource method="GET" path="/data/foundation/catalog/{objectName}/{id}" type="COMPLEX" name="get" displayName="Get">
+					<description>Get an object record by Id.</description>
+					<mappings>
+						<map isRequired="true" isFixed="true" context="IN" name="objectName" displayName="objectName">
+							<source type="PARAMETER">core.businessObject</source>
+							<target type="PARAMETER">objectName</target>
+						</map>						
+						<map isRequired="false" context="IN" name="accept_encoding" displayName="accept_encoding">
+							<description>Used to signal the intent to consume compressed response bodies. Supported encodings: gzip.</description>
+							<source type="LITERAL">gzip</source>
+							<target type="HEADER">accept-encoding</target>
+						</map>
+					</mappings>
+					<parameters>
+						<parameter name="objectName" isRequired="true" isFixed="true" style="URI_CONTEXT">
+							<description>Get selected object information.</description>
+						</parameter>
+						<parameter name="id" isRequired="true" style="URI_CONTEXT">
+							<description>Object ID</description>
+						</parameter>
+					</parameters>
+					<handler nsName="wmadobe.experienceplatform_v1.catalogservice.interactions.GetAllHandler" type="java"/>
+					<responses>
+						<response name="record" code="200-599" messageFormatterType="application/octet+idataoref" builderType="application/json" documentRef="wmadobe.experienceplatform_v1.catalogservice.doctypes:record" excludeRoot="false"/>
+					</responses>
+				</resource>
+				
+			</resources>
+		</service>
+		
+		<service xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="RESTServiceType" endpoint="${cn.providerUrl}" name="flowAPI" displayName="Flow API">
+			
+			<documentModel packageName="WmAdobeExperiencePlatformProvider" nsName="wmadobe.experienceplatform_v1.flowService.doctypes" useInlineModel="true">
+				<abstractObject name="getAbstractRecord" type="businessObject">
+					<lookup type="boList" ref="wmadobe.experienceplatform_v1.flowService.lookups:boList"/>
+					<lookup type="boDescribe" ref="wmadobe.experienceplatform_v1.flowService.lookups:boDescribe"/>
+				</abstractObject>
+				<abstractObject name="fields" type="businessObject">
+					<lookup type="boList" ref="wmadobe.experienceplatform_v1.flowService.lookups:boList"/>
+					<lookup type="boDescribe" ref="wmadobe.experienceplatform_v1.flowService.lookups:boDescribe"/>
+				</abstractObject>
+			</documentModel>
+			<resources>
+				<mappings>
+					<map context="IN" name="apiKey" displayName="apiKey" isRequired="true" isFixed="true">
+						<source type="IDATA">jwt.cx.clientId</source>
+						<target type="HEADER">x-api-key</target>
+					 </map>
+					 <map context="IN" name="org_id" displayName="org_id" isRequired="true"  isFixed="true">
+						<source type="IDATA">oauth_v20.iss</source>
+						<target type="HEADER">x-gw-ims-org-id</target>
+					 </map>
+					 <map context="IN" name="Content_Type" displayName="Content_Type" isRequired="true">
+						<source type="LITERAL">application/json</source>
+						<target type="HEADER">Content-Type</target>
+					 </map>
+					 <map context="IN" name="x_sandbox_name" displayName="x_sandbox_name" isRequired="true" isFixed="true">
+						<source type="IDATA">cx.sanbox_name</source>
+						<target type="HEADER">x-sandbox-name</target>
+					</map>
+				</mappings>
+				
+				<resource method="POST" path="/data/foundation/flowservice/{objectName}" type="COMPLEX" name="create" displayName="Create">
+					<description>Create a new object.</description>
+					<mappings>
+						<map isRequired="true" isFixed="true" context="IN" name="objectName" displayName="objectName">
+							<source type="PARAMETER">core.businessObject</source>
+							<target type="PARAMETER">objectName</target>
+						</map>
+					</mappings>
+					<parameters>
+						<parameter name="objectName" isRequired="true" isFixed="true" style="URI_CONTEXT">
+							<description>Get selected object information.</description>
+						</parameter>
+					</parameters>
+					<handler nsName="wmadobe.experienceplatform_v1.flowService.interactions.CreateHandler" type="java"/>
+					<request name="record" messageFormatterType="application/json" builderType="application/octet+idataoref" documentRef="wmadobe.experienceplatform_v1.flowService.doctypes:record" excludeRoot="true"/>					
+					<responses>
+						 <response name="createResponse" code="200-599" messageFormatterType="application/octet+idataoref" builderType="application/json" documentRef="wmadobe.experienceplatform_v1.flowService.doctypes:createResponse" excludeRoot="false"/>
+						 <response name="errorResponse" code="400-599" messageFormatterType="application/octet+idataoref" builderType="application/json" documentRef="wmadobe.experienceplatform_v1.flowService.doctypes:errorResponse" excludeRoot="true"/>
+					</responses>
+				</resource>
+				
+				<resource method="POST" path="/data/foundation/flowservice/{objectName}" type="COMPLEX" name="createBaseConnection" displayName="Create Base Connection">
+					<description>Create a new connection.</description>
+					<mappings>
+						<map isRequired="true" isFixed="true" context="IN" name="objectName" displayName="objectName">
+							<source type="PARAMETER">core.businessObject</source>
+							<target type="PARAMETER">objectName</target>
+						</map>
+					</mappings>
+					<parameters>
+						<parameter name="objectName" isRequired="true" isFixed="true" style="URI_CONTEXT">
+							<description>Get selected object information.</description>
+						</parameter>
+					</parameters>
+					<request name="connections" messageFormatterType="application/json" builderType="application/octet+idataoref" documentRef="wmadobe.experienceplatform_v1.flowService.doctypes.create:connections" excludeRoot="false" />
+					
+					<responses>
+						<response name="connectionResponse" code="200-204" messageFormatterType="application/octet+idataoref" builderType="application/json" documentRef="wmadobe.experienceplatform_v1.flowService.doctypes:createResponse" excludeRoot="true"/>
+						<response name="errorResponse" code="400-599" messageFormatterType="application/octet+idataoref" builderType="application/json" documentRef="wmadobe.experienceplatform_v1.flowService.doctypes:errorResponse" excludeRoot="true"/>
+					</responses>
+				</resource>
+				
+				<resource method="GET" path="/data/foundation/flowservice/{objectName}" type="COMPLEX" name="query" displayName="Query">
+					<description>Query records based on criteria.</description>
+					<mappings>
+						<map isRequired="true" isFixed="true" context="IN" name="objectName" displayName="objectName">
+							<source type="PARAMETER">core.businessObject</source>
+							<target type="PARAMETER">objectName</target>
+						</map>
+					</mappings>
+					<parameters>
+						<parameter name="objectName" isRequired="true" isFixed="true" style="URI_CONTEXT">
+							<description>Get selected object information.</description>
+						</parameter>
+						<parameter name="property" isRequired="false" style="QUERYSTRING_PARAM">
+							<description>A comma separated list of top-level object properties to be returned in the response. </description>
+						</parameter>
+						<parameter name="limit" isRequired="false" style="QUERYSTRING_PARAM">
+							<description>Limit response to a specific number of objects.</description>
+						</parameter>
+						<parameter name="orderby" isRequired="false" style="QUERYSTRING_PARAM">
+							<description>Sort response by specified fields</description>
+						</parameter>
+						<parameter name="continuationToken" isRequired="false" style="QUERYSTRING_PARAM">
+							<description>A token for fetching records for next page.</description>
+						</parameter>
+						<parameter name="count" isRequired="false" style="QUERYSTRING_PARAM">
+							<description>A boolean value specifying if the count of resources should be returned.</description>
+						</parameter>
+					</parameters>
+					<handler nsName="wmadobe.experienceplatform_v1.flowService.interactions.QueryHandler" type="java"/>
+					<responses>
+						<response name="getResponse" code="200-599" messageFormatterType="application/octet+idataoref" builderType="application/json" documentRef="wmadobe.experienceplatform_v1.flowService.doctypes:getResponse" excludeRoot="true"/>
+						<response name="errorResponse" code="400-599" messageFormatterType="application/octet+idataoref" builderType="application/json" documentRef="wmadobe.experienceplatform_v1.flowService.doctypes:errorResponse" excludeRoot="true"/>
+					</responses>
+				</resource>
+				
+				<resource method="GET" path="/data/foundation/flowservice/{objectName}/{id}" type="COMPLEX" name="get" displayName="Get">
+					<description>Get an object record by Id.</description>
+					<mappings>
+						<map isRequired="true" isFixed="true" context="IN" name="objectName" displayName="objectName">
+							<source type="PARAMETER">core.businessObject</source>
+							<target type="PARAMETER">objectName</target>
+						</map>
+						<map context="IN" name="Content_Type" displayName="Content_Type" isRequired="true">
+							<source type="LITERAL">application/json</source>
+							<target type="HEADER">Accept</target>
+						</map>
+						<map isRequired="false" context="IN" name="accept_encoding" displayName="accept_encoding">
+							<description>Used to signal the intent to consume compressed response bodies. Supported encodings: gzip.</description>
+							<source type="LITERAL">gzip</source>
+							<target type="HEADER">accept-encoding</target>
+						</map>
+					</mappings>
+					<parameters>
+						<parameter name="objectName" isRequired="true" isFixed="true" style="URI_CONTEXT">
+							<description>Get selected object information.</description>
+						</parameter>
+						<parameter name="id" isRequired="true" style="URI_CONTEXT">
+							<description>Object ID</description>
+						</parameter>
+					</parameters>
+					<handler nsName="wmadobe.experienceplatform_v1.flowService.interactions.GetHandler" type="java"/>
+					<responses>
+						<response name="getResponse" code="200-599" messageFormatterType="application/octet+idataoref" builderType="application/json" documentRef="wmadobe.experienceplatform_v1.flowService.doctypes:getResponse" excludeRoot="true"/>
+						<response name="errorResponse" code="400-599" messageFormatterType="application/octet+idataoref" builderType="application/json" documentRef="wmadobe.experienceplatform_v1.flowService.doctypes:errorResponse" excludeRoot="true"/>
+					</responses>
+				</resource>
+				
+				<resource method="GET" path="/data/foundation/flowservice/connections/{BASE_CONNECTION_ID}/explore" type="SIMPLE" name="exploreBaseConnection" displayName="Explore Base Connection">
+					<description>Explore files and directories</description>
+					<parameters>
+						<parameter name="BASE_CONNECTION_ID" isRequired="true" style="URI_CONTEXT">
+							<description>Base connection id.</description>
+						</parameter>
+						<parameter name="objectType" isRequired="true" style="QUERYSTRING_PARAM">
+							<description>The type of object that you wish to explore.</description>
+						</parameter>
+						<parameter name="object" isRequired="false" style="QUERYSTRING_PARAM">
+							<description>This parameter is required only when viewing a specific directory.</description>
+						</parameter>
+					</parameters>
+					<responses>
+						<response name="exploreBaseConnectionResponse" code="200-599" messageFormatterType="application/octet+idataoref" builderType="application/json" documentRef="wmadobe.experienceplatform_v1.flowService.doctypes:exploreBaseConnectionResponse" excludeRoot="true"/>
+						<response name="errorResponse" code="400-599" messageFormatterType="application/octet+idataoref" builderType="application/json" documentRef="wmadobe.experienceplatform_v1.flowService.doctypes:errorResponse" excludeRoot="true"/>
+					</responses>
+				</resource>
+				
+			</resources>
+		</service>
+		
+		
+		<service xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="RESTServiceType" endpoint="${cn.providerUrl}" name="dataAccessAPI" displayName="Data Access API">
+			<description>Data Access Service facilitates data access and egress on Adobe Experience Platform.</description>
+			
+			<documentModel packageName="WmAdobeExperiencePlatformProvider" nsName="wmadobe.experienceplatform_v1.dataaccessservice.doctypes" useInlineModel="true">
+				<abstractObject name="abstractRecord" type="businessObject">
+					<lookup type="boList" ref="wmadobe.experienceplatform_v1.dataaccessservice.lookups:boList"/>
+					<lookup type="boDescribe" ref="wmadobe.experienceplatform_v1.dataaccessservice.lookups:boDescribe"/>
+				</abstractObject>
+			</documentModel>
+			<resources>
+				<mappings>
+					<map context="IN" name="apiKey" isFixed="true" displayName="apiKey" isRequired="true">
+						<source type="IDATA">jwt.cx.clientId</source>
+						<target type="HEADER">x-api-key</target>
+					 </map>
+					 <map context="IN" name="org_id" isFixed="true" displayName="org_id" isRequired="true">
+						<source type="IDATA">oauth_v20.iss</source>
+						<target type="HEADER">x-gw-ims-org-id</target>
+					 </map>
+					 <map context="IN" name="Content_Type" displayName="Content_Type" isRequired="true" isFixed="true">
+						<description>The Content-Type entity header is used to indicate the media type of the resource.</description>
+						<source type="LITERAL">application/json</source>
+						<target type="HEADER">Content-Type</target>
+					 </map>
+					 <map context="IN" name="x_sandbox_name" displayName="x_sandbox_name" isRequired="true" isFixed="true">
+						<source type="IDATA">cx.sanbox_name</source>
+						<target type="HEADER">x-sandbox-name</target>
+					</map>
+				  </mappings>
+				
+				<!-- DATA ACCESS: Configure data access and egress for Adobe Experience Platform. -->
+				<resource method="GET" path="/data/foundation/export/batches/{batchId}/files" type="SIMPLE" name="getDatasetFilesByBatchId" displayName="Get Dataset Files By Batch Id">
+					<description>List all dataset files under a batch.</description>
+					<parameters>
+						<parameter name="batchId" isRequired="true" style="URI_CONTEXT">
+							<description>Batch ID</description>
+						 </parameter>
+						 <parameter name="start" isRequired="false" style="QUERYSTRING_PARAM">
+							<description>Paging parameter to specify start of new page. E.g, start=1</description>
+						 </parameter>
+						 <parameter name="limit" isRequired="false" style="QUERYSTRING_PARAM">
+							<description>Paging parameter to specify number of results per page. E.g, limit=10</description>
+						 </parameter>
+					</parameters>
+					<responses>
+						<response name="getDatasetFileResponse" code="200" messageFormatterType="application/octet+idataoref" builderType="application/json" documentRef="wmadobe.experienceplatform_v1.dataaccessservice.doctypes:getDatasetFileResponse" excludeRoot="true"/>
+						<response name="error" code="400-599" messageFormatterType="application/octet+idataoref" builderType="application/json" documentRef="wmadobe.experienceplatform_v1.dataaccessservice.doctypes:errorResponse" excludeRoot="true"/>
+					</responses>
+				</resource>
+				
+				<resource method="GET" path="/data/foundation/export/batches/{batchId}/failed" type="SIMPLE" name="getFailedBatchByBatchId" displayName="Get Failed Batch By Batch Id">
+					<description>List all files under failed batch.</description>
+					<parameters>
+						<parameter name="batchId" isRequired="true" style="URI_CONTEXT">
+							<description>Batch ID</description>
+						 </parameter>
+						 <parameter name="start" isRequired="false" style="QUERYSTRING_PARAM">
+							<description>Paging parameter to specify start of new page. E.g, start=1</description>
+						 </parameter>
+						 <parameter name="limit" isRequired="false" style="QUERYSTRING_PARAM">
+							<description>Paging parameter to specify number of results per page. E.g, limit=10</description>
+						 </parameter>
+						 <parameter name="path" isRequired="false" style="QUERYSTRING_PARAM">
+							<description>Full file name of file under partition identified by File Identifier. The contents of the file would be downloaded if this parameter is provided. E.g, profiles.csv</description>
+						 </parameter>
+					</parameters>
+					<responses>
+						<response name="getFaileBatchResponse" code="200" messageFormatterType="application/octet+idataoref" builderType="application/json" documentRef="wmadobe.experienceplatform_v1.dataaccessservice.doctypes:getDatasetFileResponse" excludeRoot="true"/>
+						<response name="error" code="400-599" messageFormatterType="application/octet+idataoref" builderType="application/json" documentRef="wmadobe.experienceplatform_v1.dataaccessservice.doctypes:errorResponse" excludeRoot="true"/>
+					</responses>
+				</resource>
+				
+				<!-- FILES: Retrieve headers containing metadata for a file specified by id-->
+				<resource method="HEAD" path="/data/foundation/export/files/{dataSetFileId}" type="SIMPLE" name="getHeadersOfdatasetFile" displayName="Get headers of a dataset file" isHidden="true">
+					<description>Retrieves headers in response with a file’s metadata. The response header will indicate information regarding the specified file.</description>
+					<mappings>
+						<map isRequired="false" context="OUT" name="Content-type" displayName="Content-type">
+							<source type="LITERAL"></source>
+							<target type="HEADER">Content-type</target>
+						</map>
+						<map isRequired="false" context="OUT" name="Accept-Ranges" displayName="Accept-Ranges">
+							<source type="LITERAL"></source>
+							<target type="HEADER">Accept-Ranges</target>
+						</map>
+						<map isRequired="false" context="OUT" name="Content_Length" displayName="Content_Length">
+							<source type="LITERAL"></source>
+							<target type="HEADER">Content-Length</target>
+						</map>
+					</mappings>
+					<parameters>
+						<parameter name="dataSetFileId" isRequired="true" style="URI_CONTEXT">
+							<description>File Identifier</description>
+						 </parameter>
+						 <parameter name="path" isRequired="true" style="QUERYSTRING_PARAM">
+							<description>Full file name of file under partition identified by File Identifier. E.g, profiles.csv</description>
+						 </parameter>
+					</parameters>
+					<responses>
+						<response name="emptyResponse" code="200-599" messageFormatterType="application/octet+idataoref" builderType="application/json" documentRef="wmadobe.experienceplatform_v1.dataaccessservice.doctypes:emptyResponse" excludeRoot="false"/>
+					</responses>
+				</resource>
+				
+				<resource method="GET" path="/data/foundation/export/files/{dataSetFileId}" type="SIMPLE" name="getDatasetFileMetadataByDatasetFileId" displayName="Get Dataset File Metadata">
+					<description>Returns either a complete file, or a directory of chunked data that make up the file. The response contains a data array that may contain a single entry, or a list of files belonging to that directory.</description>
+					<parameters>
+						<parameter name="dataSetFileId" isRequired="true" style="URI_CONTEXT">
+							<description>File Identifier</description>
+						 </parameter>
+						 <parameter name="start" isRequired="false" style="QUERYSTRING_PARAM">
+							<description>Paging parameter to specify start of new page. E.g, start=fileName.csv</description>
+						 </parameter>
+						 <parameter name="limit" isRequired="false" style="QUERYSTRING_PARAM">
+							<description>Paging parameter to specify number of results per page. E.g, limit=10</description>
+						 </parameter>
+					</parameters>
+					<responses>
+						<response name="getDatasetFileMetaDataResponse" code="200-206" messageFormatterType="application/octet+idataoref" builderType="application/json" documentRef="wmadobe.experienceplatform_v1.dataaccessservice.doctypes:getDatasetFileDataResponse" excludeRoot="true"/>
+						 <response name="error" code="400-599" messageFormatterType="application/octet+idataoref" builderType="application/json" documentRef="wmadobe.experienceplatform_v1.dataaccessservice.doctypes:errorResponse" excludeRoot="true"/>
+					</responses>
+				</resource>
+				
+				<resource method="GET" path="/data/foundation/export/files/{dataSetFileId}" type="SIMPLE" name="getDatasetFileData" displayName="Download File">
+					<description>Returns either a complete file, or a directory of chunked data that make up the file.</description>
+					<mappings>
+						<map context="IN" name="Content_Type" displayName="Content_Type" isRequired="false" isFixed="false">
+							<description>The Content-Type entity header is used to indicate the media type of the resource.</description>
+							<source type="LITERAL"></source>
+							<target type="HEADER">Content-Type</target>
+						</map>
+						<map context="IN" name="Range" displayName="Range" isRequired="false">
+							<description>Range of bytes requested. E.g, Range: bytes=0-100000</description>
+							<source type="LITERAL"></source>
+							<target type="HEADER">Range</target>
+						</map>
+						<map context="OUT" name="Content_Range" displayName="Content_Range" isRequired="false">
+							<description>Range of bytes sent by the server. Can be different from what user requested. E.g, Content-Range: bytes 0-100/124000</description>
+							<source type="LITERAL"></source>
+							<target type="HEADER">Content-Range</target>
+						</map>
+						<map isRequired="false" context="OUT" name="Content_Length" displayName="Content_Length">
+							 <description>Size of payload (bytes) in the response.</description>
+							<source type="LITERAL"></source>
+							<target type="HEADER">Content-Length</target>
+						</map>
+					</mappings>
+					<parameters>
+						<parameter name="dataSetFileId" isRequired="true" style="URI_CONTEXT">
+							<description>File Identifier</description>
+						</parameter>
+						<parameter name="path" isRequired="true" style="QUERYSTRING_PARAM">
+							<description>Full file name of file under partition identified by File Identifier. The contents of the file would be downloaded if this parameter is provided. E.g, profiles.csv</description>
+						</parameter>
+					</parameters>
+					<responses>
+						<response name="stream" code="200-599" messageFormatterType="vnd.sag.cloudstreams+binary" builderType="vnd.sag.cloudstreams+binary" excludeRoot="true"/>
+					</responses>
+				</resource>
+				
+				<!--PREVIEW: Retrieve the first 100 rows of csv or parquet files -->
+				<resource method="GET" path="/data/foundation/export/datasets/{datasetId}/preview" type="COMPLEX" name="preview" displayName="Preview">
+					<description>Preview the first 100 rows of CSV or Parquet files.</description>
+					 <mappings>
+						<map context="IN" name="businessObject" displayName="businessObject" isRequired="true" isFixed="true">
+							<source type="PARAMETER">core.businessObject</source>
+							<target type="PARAMETER">datasetId</target>
+						</map>
+					 </mappings>
+					<parameters>
+						<parameter name="datasetId" isRequired="true" isFixed="true" style="URI_CONTEXT">
+							<description>DataSet ID</description>
+						 </parameter>
+					</parameters>
+					<responses>
+						<response name="previewResponse" code="200" messageFormatterType="application/octet+idataoref" builderType="application/json" documentRef="wmadobe.experienceplatform_v1.dataaccessservice.doctypes:previewResponse" excludeRoot="true"/>
+						<response name="error" code="400-599" messageFormatterType="application/octet+idataoref" builderType="application/json" documentRef="wmadobe.experienceplatform_v1.dataaccessservice.doctypes:errorResponse" excludeRoot="true"/>
+					</responses>
+				</resource>
+				
+				<!-- HEALTH DETAILED: Retrieve health status for all dependent services -->
+				<!-- Recently they removed this api. So commenting out this resouce.-->
+				<!--resource method="GET" path="/data/foundation/export/health-detailed" type="SIMPLE" name="getHealthDetails" displayName="Get Health Details">
+					<description>Returns health status for all dependent services.</description>
+					<responses>
+						<response name="getHealthDetailsResponse" code="200" messageFormatterType="application/octet+idataoref" builderType="application/json" documentRef="wmadobe.experienceplatform_v1.dataaccessservice.doctypes:getHealthDetailsResponse" excludeRoot="true"/>
+						 <response name="errorResponse" code="400-599" messageFormatterType="application/octet+idataoref" builderType="application/json" documentRef="wmadobe.experienceplatform_v1.dataaccessservice.doctypes:errorResponse" excludeRoot="true"/>
+					</responses>
+				</resource-->
+			</resources>
+		</service>
+	
+		<service xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="RESTServiceType" endpoint="${cn.providerUrl}" name="dataIngestionAPI" displayName="Data Ingestion API">
+			
+			<documentModel packageName="WmAdobeExperiencePlatformProvider" nsName="wmadobe.experienceplatform_v1.dataIngestionservice.doctypes" useInlineModel="true">
+				<abstractObject name="getAbstractRecord" type="businessObject">
+					<lookup type="boList" ref="wmadobe.experienceplatform_v1.dataIngestionservice.lookups:boList"/>
+					<lookup type="boDescribe" ref="wmadobe.experienceplatform_v1.dataIngestionservice.lookups:boDescribe"/>
+				</abstractObject>
+			</documentModel>
+			<resources>
+				<mappings>
+					<map context="IN" name="apiKey" isFixed="true" displayName="apiKey" isRequired="true">
+						<source type="IDATA">jwt.cx.clientId</source>
+						<target type="HEADER">x-api-key</target>
+					</map>
+					<map context="IN" name="org_id" isFixed="true" displayName="org_id" isRequired="true">
+						<source type="IDATA">oauth_v20.iss</source>
+						<target type="HEADER">x-gw-ims-org-id</target>
+					</map>
+					<map context="IN" name="content_type" displayName="content_type" isRequired="true">
+						<source type="LITERAL">application/json</source>
+						<target type="HEADER">Content-Type</target>
+					</map>
+					<map context="IN" name="x_sandbox_name" displayName="x_sandbox_name" isRequired="true" isFixed="true">
+						<source type="IDATA">cx.sanbox_name</source>
+						<target type="HEADER">x-sandbox-name</target>
+					</map>
+				  </mappings>
+				
+				<!--data/core/edge/{objectName} -->
+				<resource method="POST" path="/data/{objectName1}/{objectName2}/{objectName}" type="COMPLEX" name="create" displayName="Create">
+					<description>Creates a new batch/inlet.</description>
+					<mappings>
+						<map isRequired="true" isFixed="true" context="IN" name="objectName" displayName="objectName">
+							<source type="PARAMETER">core.businessObject</source>
+							<target type="PARAMETER">objectName</target>
+						</map>
+						<map isRequired="false" context="IN" name="Cache_Control" displayName="Cache_Control">
+							<source type="LITERAL">no-cache</source>
+							<target type="HEADER">Cache-Control</target>
+						</map>
+					</mappings>
+					<parameters>
+						<parameter name="objectName1" isRequired="true" isFixed="true" style="URI_CONTEXT">
+							<description>Valid values: foundation(for batch) and core(for inlet) </description>
+						</parameter>
+						<parameter name="objectName2" isRequired="true" isFixed="true" style="URI_CONTEXT">
+							<description>Valid values: import(for batch) and edge(for inlet)</description>
+						</parameter>
+						<parameter name="objectName" isRequired="true"  isFixed="true" style="URI_CONTEXT">
+							<description>create selected object information.</description>
+						</parameter>
+					</parameters>
+					<handler nsName="wmadobe.experienceplatform_v1.dataIngestionservice.interactions.CreateHandler" type="java"/>
+					
+					<request name="record" messageFormatterType="application/json" builderType="application/octet+idataoref" documentRef="wmadobe.experienceplatform_v1.dataIngestionservice.doctypes:record" excludeRoot="true"/>
+					<responses>
+						 <response name="createResponse" code="200-599" messageFormatterType="application/octet+idataoref" builderType="application/json" documentRef="wmadobe.experienceplatform_v1.dataIngestionservice.doctypes:createResponse" excludeRoot="true" dimension="1"/>
+					</responses>
+				</resource>
+				
+				<!-- Complete the batch to trigger the downstream data promotion workflow. -->
+				<resource method="POST" path="/data/foundation/import/batches/{batchId}" type="SIMPLE" name="completeBatch" displayName="Complete Batch">
+					<description>Complete the batch to trigger the downstream data promotion workflow.</description>
+					<parameters>
+						<parameter name="batchId" isRequired="true" style="URI_CONTEXT">
+							<description>The ID of the batch that needs to be updated.</description>
+						</parameter>
+						<parameter name="action" isRequired="true" style="QUERYSTRING_PARAM" dataType="Record"
+							documentRef="wmadobe.experienceplatform_v1.dataIngestionservice.doctypes.parameters:action">
+							<description>The action to take on the batch.</description>
+						</parameter>
+					</parameters>
+					<responses>
+						 <response name="batch" code="200-204" messageFormatterType="application/octet+idataoref" builderType="application/json" documentRef="wmadobe.experienceplatform_v1.dataIngestionservice.doctypes.get:batch" excludeRoot="true"/>
+						 <response name="error" code="400-599" messageFormatterType="application/octet+idataoref" builderType="application/json" documentRef="wmadobe.experienceplatform_v1.dataIngestionservice.doctypes:errorResponse" excludeRoot="true"/>
+					</responses>
+				</resource>
+				
+				<resource method="PUT" path="/data/foundation/import/batches/{batchId}/datasets/{datasetId}/files/{fileName}" type="SIMPLE" name="uploadSimpleFileAsStream" displayName="Upload Simple File As Stream">
+				<description>Upload file to a dataset in a batch.</description>
+					<mappings>
+						<map isRequired="true" isFixed="true" context="IN" name="Content_Type" displayName="Content_Type">
+							<source type="LITERAL">application/octet-stream</source>
+							<target type="HEADER">Content-Type</target>
+						</map>
+					</mappings>
+					<parameters>
+						<parameter name="batchId" isRequired="true" style="URI_CONTEXT">
+							<description>The ID of the batch data is being uploaded to.</description>
+						</parameter>
+						<parameter name="datasetId" isRequired="true" style="URI_CONTEXT">
+							<description>The ID of the dataset data is being uploaded to.</description>
+						</parameter>
+						<parameter name="fileName" isRequired="true" style="URI_CONTEXT">
+							<description>The complete path of the file. Note that the directory structure denoted in this path is preserved and can be used to denote partitions that the file data belongs to.</description>
+						</parameter>
+					</parameters>
+					 <request name="stream" messageFormatterType="vnd.sag.cloudstreams+binary" builderType="vnd.sag.cloudstreams+binary" excludeRoot="true"/>
+					<responses>
+						<response name="uploadFileResponse" code="200-204" messageFormatterType="application/octet+idataoref" builderType="application/json" documentRef="wmadobe.experienceplatform_v1.dataIngestionservice.doctypes:uploadFileResponse" excludeRoot="false"/>
+						<response name="error" code="400-599" messageFormatterType="application/octet+idataoref" builderType="application/json" documentRef="wmadobe.experienceplatform_v1.dataIngestionservice.doctypes:errorResponse" excludeRoot="true"/>
+					</responses>
+				</resource>
+				
+				<resource method="PUT" path="/data/foundation/import/batches/{batchId}/datasets/{datasetId}/files/{fileName}" type="COMPLEX" name="uploadSimpleFile" displayName="Upload Simple File">
+				<description>Upload file to a dataset in a batch.</description>
+					<mappings>
+						<map isRequired="true" isFixed="true" context="IN" name="Content_Type" displayName="Content_Type">
+							<source type="LITERAL">application/octet-stream</source>
+							<target type="HEADER">Content-Type</target>
+						</map>
+						<map isRequired="true" isFixed="true" context="IN" name="dataset_Id" displayName="dataset_Id">
+							<source type="PARAMETER">core.businessObject</source>
+							<target type="PARAMETER">datasetId</target>
+						</map>
+					</mappings>
+					<parameters>
+						<parameter name="batchId" isRequired="true" style="URI_CONTEXT">
+							<description>The ID of the batch data is being uploaded to.</description>
+						</parameter>
+						<parameter name="datasetId" isRequired="true" style="URI_CONTEXT">
+							<description>The ID of the dataset data is being uploaded to.</description>
+						</parameter>
+						<parameter name="fileName" isRequired="true" style="URI_CONTEXT">
+							<description>The complete path of the file. Note that the directory structure denoted in this path is preserved and can be used to denote partitions that the file data belongs to.</description>
+						</parameter>
+					</parameters>
+					<handler nsName="wmadobe.experienceplatform_v1.dataIngestionservice.interactions.UploadSimpleFileHandler" type="java"/>
+					<request name="stream" messageFormatterType="vnd.sag.cloudstreams+binary" builderType="vnd.sag.cloudstreams+binary" documentRef="wmadobe.experienceplatform_v1.dataIngestionservice.doctypes:record"/>
+					<responses>
+						<response name="uploadFileResponse" code="200-204" messageFormatterType="application/octet+idataoref" builderType="application/json" documentRef="wmadobe.experienceplatform_v1.dataIngestionservice.doctypes:uploadFileResponse" excludeRoot="false"/>
+						<response name="error" code="400-599" messageFormatterType="application/octet+idataoref" builderType="application/json" documentRef="wmadobe.experienceplatform_v1.dataIngestionservice.doctypes:errorResponse" excludeRoot="true"/>
+					</responses>
+				</resource>
+				
+		<!-- Files larger than 512MB are uploaded in parts and this PATCH endpoint provides you a way to upload a part of your large file that was initialized via the POST endpoint above -->
+                <resource method="PATCH" path="/data/foundation/import/batches/{batchId}/datasets/{datasetId}/files/{fileName}" type="SIMPLE" name="uploadFilePart" displayName="Upload File Part">
+                <description>Upload file part to a resumable file being uploaded to a batch dataset.</description>
+                    <mappings>
+                        <map isRequired="true" isFixed="true" context="IN" name="Content_Type" displayName="Content_Type">
+                            <source type="LITERAL">application/octet-stream</source>
+                            <target type="HEADER">Content-Type</target>
+                        </map>
+                        <map isRequired="true" context="IN" name="Content_Range" displayName="Content_Range">
+                            <source type="LITERAL"></source>
+                            <target type="HEADER">Content-Range</target>
+                        </map>
+                        <map isRequired="false" context="OUT" name="Range" displayName="Range">
+                            <source type="LITERAL"></source>
+                            <target type="HEADER">Range</target>
+                        </map>
+						<map isRequired="false" context="OUT" name="Range" displayName="Range">
+                            <source type="LITERAL">application/json</source>
+                            <target type="HEADER">Accept</target>
+                        </map>
+                    </mappings>
+                    <parameters>
+                        <parameter name="batchId" isRequired="true" style="URI_CONTEXT">
+                            <description>The ID of the batch data is being uploaded to.</description>
+                        </parameter>
+                        <parameter name="datasetId" isRequired="true" style="URI_CONTEXT">
+                            <description>The ID of the dataset data is being uploaded to.</description>
+                        </parameter>
+                        <parameter name="fileName" isRequired="true" style="URI_CONTEXT">
+                            <description>The complete path of the file. Note that the directory structure denoted in this path is preserved and can be used to denote partitions that the file data belongs to.</description>
+                        </parameter>						
+                    </parameters>
+                    <request name="stream" messageFormatterType="vnd.sag.cloudstreams+binary" builderType="vnd.sag.cloudstreams+binary" excludeRoot="true"/>
+                    <responses>
+                        <response name="uploadFilePartResponse" code="200-204" messageFormatterType="application/octet+idataoref" builderType="application/json" documentRef="wmadobe.experienceplatform_v1.dataIngestionservice.doctypes:emptyResponse" excludeRoot="false"/>
+                        <response name="error" code="400-599" messageFormatterType="application/octet+idataoref" builderType="application/json" documentRef="wmadobe.experienceplatform_v1.dataIngestionservice.doctypes:errorResponse" excludeRoot="true"/>
+                    </responses>
+                </resource>
+				
+				<!-- Operate on the identified file.-->
+				<resource method="POST" path="/data/foundation/import/batches/{batchId}/datasets/{datasetId}/files/{fileName}" type="SIMPLE" name="completeFileUpload" displayName="Complete File Upload">
+				<description>Used to signal intialization and completion of the file that’s uploaded in parts.</description>
+					<mappings>
+						<map context="IN" name="Content_Type" displayName="Content_Type" isRequired="false">
+							<source type="LITERAL">application/json</source>
+							<target type="HEADER">Content-Type</target>
+						</map>
+					</mappings>
+					<parameters>
+						<parameter name="batchId" isRequired="true" style="URI_CONTEXT">
+							<description>The ID of the batch data is being uploaded to.</description>
+						</parameter>
+						<parameter name="datasetId" isRequired="true" style="URI_CONTEXT">
+							<description>The ID of the dataset data is being uploaded to.</description>
+						</parameter>
+						<parameter name="fileName" isRequired="true" style="URI_CONTEXT">
+							<description>The complete path of the file. Note that the directory structure denoted in this path is preserved and can be used to denote partitions that the file data belongs to.</description>
+						</parameter>
+						<parameter name="action" isRequired="true" style="QUERYSTRING_PARAM" dataType="Record"
+							documentRef="wmadobe.experienceplatform_v1.dataIngestionservice.doctypes:action">
+							<description>The action to perform on the file with the supported values currently being INITIALIZE and COMPLETE.</description>
+						</parameter>
+					</parameters>
+					<responses>
+						<response name="completeFileUploadResponse" code="200-204" messageFormatterType="application/octet+idataoref" builderType="application/json" documentRef="wmadobe.experienceplatform_v1.dataIngestionservice.doctypes:emptyResponse" excludeRoot="false"/>
+						<response name="error" code="400-599" messageFormatterType="application/octet+idataoref" builderType="application/json" documentRef="wmadobe.experienceplatform_v1.dataIngestionservice.doctypes:errorResponse" excludeRoot="true"/>
+					</responses>
+				</resource>
+				
+				<resource method="GET" path="/data/core/edge/inlet" type="SIMPLE" name="queryInlet" displayName="Query Inlet">
+					<description>Query inlets.</description>
+					<mappings>
+						<map isRequired="true" context="IN" name="Cache_Control" displayName="Cache_Control">
+							<source type="LITERAL">no-cache</source>
+							<target type="HEADER">Cache-Control</target>
+						</map>
+					</mappings>
+					<parameters>
+						<parameter name="dataType" isRequired="false" style="QUERYSTRING_PARAM" dataType="Record"
+							documentRef="wmadobe.experienceplatform_v1.dataIngestionservice.doctypes.parameters:dataType">
+							<description>Available values : raw, xdm</description>
+						</parameter>
+						<parameter name="name" isRequired="false" style="QUERYSTRING_PARAM">
+							<description>The name you want to use for your data inlet.</description>
+						</parameter>
+						<parameter name="sourceId" isRequired="false" style="QUERYSTRING_PARAM">
+							<description>A meaningful identifier or name of the source sending the streaming data.</description>
+						</parameter>
+						<parameter name="status" isRequired="false" style="QUERYSTRING_PARAM" dataType="Record"
+							documentRef="wmadobe.experienceplatform_v1.dataIngestionservice.doctypes.parameters:status">
+							<description>Available values : active, inactive</description>
+						</parameter>
+						<parameter name="location" isRequired="false" style="QUERYSTRING_PARAM">
+							<description>Location of destination.</description>
+						</parameter>
+						<parameter name="authenticationRequired" isRequired="false" style="QUERYSTRING_PARAM">
+							<description>Having this set to true requires that calls carry an Authorization token when sending data to the inlet.</description>
+						</parameter>
+					</parameters>
+					<responses>
+						<response name="items" code="200-204" messageFormatterType="application/octet+idataoref" builderType="application/json" documentRef="wmadobe.experienceplatform_v1.dataIngestionservice.doctypes.get:inlet" excludeRoot="true" dimension="1"/>
+						<response name="error" code="400-599" messageFormatterType="application/octet+idataoref" builderType="application/json" documentRef="wmadobe.experienceplatform_v1.dataIngestionservice.doctypes:errorResponse" excludeRoot="true"/>
+					</responses>
+				</resource>
+				
+				<resource method="GET" path="/data/core/edge/inlet/{inletId}" type="SIMPLE" name="getInlet" displayName="Get Inlet">
+					<description>Get inlet by id.</description>
+					<mappings>
+						<map isRequired="true" context="IN" name="Cache_Control" displayName="Cache_Control">
+							<source type="LITERAL">no-cache</source>
+							<target type="HEADER">Cache-Control</target>
+						</map>
+					</mappings>
+					<parameters>
+						 <parameter name="inletId" isRequired="true" style="URI_CONTEXT">
+							<description>The ID of the data inlet you want to retrieve.</description>
+						</parameter>
+					</parameters>
+					<responses>
+						<response name="getInletResponse" code="200-204" messageFormatterType="application/octet+idataoref" builderType="application/json" documentRef="wmadobe.experienceplatform_v1.dataIngestionservice.doctypes.get:inlet" excludeRoot="true"/>
+						<response name="error" code="400-599" messageFormatterType="application/octet+idataoref" builderType="application/json" documentRef="wmadobe.experienceplatform_v1.dataIngestionservice.doctypes:errorResponse" excludeRoot="true"/>
+					</responses>
+				</resource>
+				
+				<resource method="PUT" path="/data/core/edge/inlet/{inletId}" type="SIMPLE" name="updateInlet" displayName="Update Inlet">
+					 <description>Update inlet by ID.</description>
+					<mappings>
+						<map isRequired="true" context="IN" name="Cache_Control" displayName="Cache_Control">
+							<source type="LITERAL">no-cache</source>
+							<target type="HEADER">Cache-Control</target>
+						</map>
+					</mappings>
+					<parameters>
+						 <parameter name="inletId" isRequired="true" style="URI_CONTEXT">
+							<description>The ID of the data inlet you want to update.</description>
+						</parameter>
+					</parameters>
+					<request name="updateInletRequest" messageFormatterType="application/json" builderType="application/octet+idataoref"
+						documentRef="wmadobe.experienceplatform_v1.dataIngestionservice.doctypes.create:inlet" excludeRoot="true"/>
+					<responses>
+						<response name="getInletResponse" code="200-204" messageFormatterType="application/octet+idataoref" builderType="application/json" documentRef="wmadobe.experienceplatform_v1.dataIngestionservice.doctypes.get:inlet" excludeRoot="true"/>
+						<response name="error" code="400-599" messageFormatterType="application/octet+idataoref" builderType="application/json" documentRef="wmadobe.experienceplatform_v1.dataIngestionservice.doctypes:errorResponse" excludeRoot="true"/>
+					</responses>
+				</resource>
+				
+				<resource method="DELETE" path="/data/core/edge/inlet/{inletId}" type="SIMPLE" name="deleteInlet" displayName="Delete Inlet">
+					<description>Delete inlet by id.</description>
+					<mappings>
+						<map isRequired="true" context="IN" name="Cache_Control" displayName="Cache_Control">
+							<source type="LITERAL">no-cache</source>
+							<target type="HEADER">Cache-Control</target>
+						</map>
+					</mappings>
+					<parameters>
+						 <parameter name="inletId" isRequired="true" style="URI_CONTEXT">
+							<description>The ID of the data inlet you want to delete.</description>
+						</parameter>
+					</parameters>
+					<responses>
+						<response name="deleteInletResponse" code="200-204" messageFormatterType="application/octet+idataoref" builderType="application/json" documentRef="wmadobe.experienceplatform_v1.dataIngestionservice.doctypes.get:inlet" excludeRoot="true"/>
+						<response name="error" code="400-599" messageFormatterType="application/octet+idataoref" builderType="application/json" documentRef="wmadobe.experienceplatform_v1.dataIngestionservice.doctypes:errorResponse" excludeRoot="true"/>
+					</responses>
+				</resource>
+				
+				<!--PREVIEW: Generate a preview for a batch. -->
+				<resource method="GET" path="/data/foundation/import/batches/{batchId}/datasets/{datasetId}/preview" type="COMPLEX" name="preview" displayName="Preview">
+					<description>Generates data preview for the files uploaded to the batch so far. The preview could be generated for all the batch datasets collectively or per selected datasets.</description>					
+					<mappings>
+						<map context="IN" name="businessObject" displayName="businessObject" isRequired="true" isFixed="true">
+							<source type="PARAMETER">core.businessObject</source>
+							<target type="PARAMETER">datasetId</target>
+						</map>
+					 </mappings>
+					<parameters>
+						<parameter name="batchId" isRequired="true" style="URI_CONTEXT">
+							<description>The ID of the batch data is being uploaded to.</description>
+						 </parameter>
+						<parameter name="datasetId" isRequired="true" isFixed="true" style="URI_CONTEXT">
+							<description>The ID of the dataset data is being uploaded to.</description>
+						</parameter>
+						<parameter name="format" isRequired="true" style="QUERYSTRING_PARAM">
+							<description>The file format for the uploaded file.</description>
+						</parameter>
+						<parameter name="delimiter" isRequired="false" style="QUERYSTRING_PARAM" defaultValue=",">
+							<description>The delimiter to use for parsing column values,</description>
+						</parameter>
+						<parameter name="quote" isRequired="false" style="QUERYSTRING_PARAM">
+							<description>The quote value to use while parsing.</description>
+						</parameter>
+						<parameter name="escape" isRequired="false" style="QUERYSTRING_PARAM" defaultValue="\">
+							<description>The escape character to use while parsing.</description>
+						</parameter>
+						<parameter name="charset" isRequired="false" style="QUERYSTRING_PARAM" defaultValue="UTF-8">
+							<description>The encoding to use for parsing.</description>
+						</parameter>
+						<parameter name="header" isRequired="false" style="QUERYSTRING_PARAM" defaultValue="true">
+							<description>The flag to indicate if the header is supplied in the dataset files. Currently headerless files aren’t supported and the header flag should always be true. This is kept for future implementation.</description>
+						</parameter>
+						<parameter name="nrow" isRequired="false" style="QUERYSTRING_PARAM" defaultValue="0">
+							<description>The number of rows to parse.</description>
+						</parameter>
+					</parameters>
+					<responses>
+						<response name="previewResponse" code="200" messageFormatterType="application/octet+idataoref" builderType="application/json" documentRef="wmadobe.experienceplatform_v1.dataIngestionservice.doctypes:previewResponse" excludeRoot="true"/>
+						<response name="error" code="400-599" messageFormatterType="application/octet+idataoref" builderType="application/json" documentRef="wmadobe.experienceplatform_v1.dataIngestionservice.doctypes:errorResponse" excludeRoot="true"/>
+					</responses>
+				</resource>
+			</resources>
+		</service>
+		
+		 <service xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="RESTServiceType" endpoint="${cn.providerUrl}" name="schemaRegistryAPI" displayName="Schema Registry API">
+			
+			<documentModel packageName="WmAdobeExperiencePlatformProvider" nsName="wmadobe.experienceplatform_v1.schemaRegistry.doctypes" useInlineModel="true">
+				<abstractObject name="aepObject" type="businessObject">
+					<lookup type="boList" ref="wmadobe.experienceplatform_v1.schemaRegistry.lookups:boList"/>
+					<lookup type="boDescribe" ref="wmadobe.experienceplatform_v1.schemaRegistry.lookups:boDescribe"/>
+				</abstractObject>
+			</documentModel>
+			<resources>
+				<mappings>
+					<map context="IN" name="apiKey" isFixed="true" displayName="apiKey" isRequired="true">
+						<source type="IDATA">jwt.cx.clientId</source>
+						<target type="HEADER">x-api-key</target>
+					 </map>
+					 <map context="IN" name="org_id" isFixed="true" displayName="org_id" isRequired="true">
+						<source type="IDATA">oauth_v20.iss</source>
+						<target type="HEADER">x-gw-ims-org-id</target>
+					 </map>
+					 <map context="IN" name="Content_Type" displayName="Content_Type" isRequired="true">
+						<source type="LITERAL">application/json</source>
+						<target type="HEADER">Content-Type</target>
+					 </map>
+					 <map context="IN" name="x_sandbox_name" displayName="x_sandbox_name" isRequired="true" isFixed="true">
+						<source type="IDATA">cx.sanbox_name</source>
+						<target type="HEADER">x-sandbox-name</target>
+					</map>
+				  </mappings>
+				
+				<!--data/core/edge/{objectName} -->
+				<resource method="POST" path="/data/foundation/schemaregistry/{containerId}/{objectName}" type="COMPLEX" name="create" displayName="Create">
+					<description>Creates a new object.</description>
+					<properties>
+						<property name="allowFieldCustomization" value="true" />
+						<property name="fieldExpansionLevel" value="10" />
+					</properties>
+					<mappings>
+						<map isRequired="true" isFixed="true" context="IN" name="objectName" displayName="objectName">
+							<source type="PARAMETER">core.businessObject</source>
+							<target type="PARAMETER">objectName</target>
+						</map>
+					</mappings>
+					<parameters>
+						<parameter name="objectName" isRequired="true"  isFixed="true" style="URI_CONTEXT">
+							<description>create selected object information.</description>
+						</parameter>
+						<parameter name="containerId" isRequired="true" style="URI_CONTEXT">
+							<description>Valid values: foundation(for batch) and core(for inlet) </description>
+						</parameter> 
+					</parameters>					
+					<handler nsName="wmadobe.experienceplatform_v1.schemaRegistry.interactions.CreateHandler" type="java"/>
+					
+					<request name="record" messageFormatterType="application/json" builderType="application/octet+idataoref" documentRef="wmadobe.experienceplatform_v1.schemaRegistry.doctypes:record" excludeRoot="true"/>
+					<responses>
+						 <response name="createResponse" code="200-599" messageFormatterType="application/octet+idataoref" builderType="application/json" documentRef="wmadobe.experienceplatform_v1.schemaRegistry.doctypes:createResponse" excludeRoot="false"/>
+					</responses>
+				</resource>
+				
+				<!--data/core/edge/{objectName} -->
+				<resource method="PUT" path="/data/foundation/schemaregistry/{containerId}/{resourceType}/{id}" type="COMPLEX" name="update" displayName="Update">
+					<description>Replace a tenant-defined resource type.</description>
+					<properties>
+						<property name="allowFieldCustomization" value="true" />
+						<property name="fieldExpansionLevel" value="10" />
+					</properties>
+					<mappings>
+						<map isRequired="true" isFixed="true" context="IN" name="resourceType" displayName="resourceType">
+							<source type="PARAMETER">core.businessObject</source>
+							<target type="PARAMETER">resourceType</target>
+						</map>
+					</mappings>
+					<parameters>
+						<parameter name="containerId" isRequired="true" style="URI_CONTEXT">
+							<description>Container ID (eg. tenant or global).</description>
+						</parameter>
+						<parameter name="resourceType" isRequired="true"  isFixed="true" style="URI_CONTEXT">
+							<description>Replace selected object information.</description>
+						</parameter>
+						<parameter name="id" isRequired="true" style="URI_CONTEXT">
+							<description>The resource meta:altId or URL encoded $id URI.</description>
+						</parameter>
+					</parameters>
+					<handler nsName="wmadobe.experienceplatform_v1.schemaRegistry.interactions.UpdateHandler" type="java"/>					
+					<request name="record" messageFormatterType="application/json" builderType="application/octet+idataoref" documentRef="wmadobe.experienceplatform_v1.schemaRegistry.doctypes:record" excludeRoot="true"/>
+					<responses>
+						 <response name="updateResponse" code="200-599" messageFormatterType="application/octet+idataoref" builderType="application/json" documentRef="wmadobe.experienceplatform_v1.schemaRegistry.doctypes:createResponse" excludeRoot="false"/>
+					</responses>
+				</resource>
+				
+				<resource method="PATCH" path="/data/foundation/schemaregistry/{containerId}/{resourceType}/{id}" type="COMPLEX" name="patch" displayName="Patch">
+					<description>Modify or update part of a tenant-defined resource type.</description>
+					<properties>
+						<property name="allowFieldCustomization" value="true" />
+						<property name="fieldExpansionLevel" value="10"/>
+					</properties>
+					<mappings>
+						<map isRequired="true" isFixed="true" context="IN" name="resourceType" displayName="resourceType">
+							<source type="PARAMETER">core.businessObject</source>
+							<target type="PARAMETER">resourceType</target>
+						</map>
+					</mappings>
+					<parameters>
+						<parameter name="containerId" isRequired="true" style="URI_CONTEXT">
+							<description>Container ID (eg. tenant or global).</description>
+						</parameter>
+						<parameter name="resourceType" isRequired="true"  isFixed="true" style="URI_CONTEXT">
+							<description>Replace selected object information.</description>
+						</parameter>
+						<parameter name="id" isRequired="true" style="URI_CONTEXT">
+							<description>The resource meta:altId or URL encoded $id URI.</description>
+						</parameter>
+					</parameters>
+					<handler nsName="wmadobe.experienceplatform_v1.schemaRegistry.interactions.PatchHandler" type="java"/>					
+					<request name="record" messageFormatterType="application/json" builderType="application/octet+idataoref" documentRef="wmadobe.experienceplatform_v1.schemaRegistry.doctypes:record" excludeRoot="true"/>
+					<responses>
+						 <response name="patchResponse" code="200-599" messageFormatterType="application/octet+idataoref" builderType="application/json" documentRef="wmadobe.experienceplatform_v1.schemaRegistry.doctypes:createResponse" excludeRoot="false"/>
+					</responses>
+				</resource>
+				
+				<resource method="GET" path="/data/foundation/schemaregistry/{containerId}/{resourceType}/{id}" type="COMPLEX" name="get" displayName="Get">
+					<description>Retrieve a specific selected resource by its unique ID.</description>
+					<properties>
+						<property name="allowFieldCustomization" value="true" />
+						<property name="fieldExpansionLevel" value="10"/>
+					</properties>
+					<mappings>
+						<map isRequired="true" isFixed="true" context="IN" name="resourceType" displayName="resourceType">
+							<source type="PARAMETER">core.businessObject</source>
+							<target type="PARAMETER">resourceType</target>
+						</map>
+						<map isRequired="true" context="IN" name="Accept" displayName="Accept">
+							<source type="LITERAL">application/vnd.adobe.xed-full+json; version=1</source>
+							<target type="HEADER">Accept</target>
+						</map>
+					</mappings>
+					<parameters>
+						<parameter name="containerId" isRequired="true" style="URI_CONTEXT">
+							<description>Container ID (eg. tenant or global).</description>
+						</parameter>
+						<parameter name="resourceType" isRequired="true"  isFixed="true" style="URI_CONTEXT">
+							<description>Replace selected object information.</description>
+						</parameter>
+						<parameter name="id" isRequired="true" style="URI_CONTEXT">
+							<description>The resource meta:altId or URL encoded $id URI.</description>
+						</parameter>
+					</parameters>
+					<handler nsName="wmadobe.experienceplatform_v1.schemaRegistry.interactions.GetHandler" type="java"/>
+					<responses>
+						 <response name="getResponse" code="200-599" messageFormatterType="application/octet+idataoref" builderType="application/json" documentRef="wmadobe.experienceplatform_v1.schemaRegistry.doctypes:record" excludeRoot="false"/>
+					</responses>
+				</resource>
+				
+				<resource method="GET" path="/data/foundation/schemaregistry/{containerId}/{resourceType}" type="COMPLEX" name="query" displayName="Query">
+					<description>Query records based on criteria.</description>
+					<properties>
+						<property name="allowFieldCustomization" value="true" />
+						<property name="fieldExpansionLevel" value="10"/>
+					</properties>
+					<mappings>
+						<map isRequired="true" isFixed="true" context="IN" name="resourceType" displayName="resourceType">
+							<source type="PARAMETER">core.businessObject</source>
+							<target type="PARAMETER">resourceType</target>
+						</map>
+						<map isRequired="true" isFixed="false" context="IN" name="Accept" displayName="Accept">
+							<source type="LITERAL">application/vnd.adobe.xed-full+json</source>
+							<target type="HEADER">Accept</target>
+						</map>
+					</mappings>
+					<parameters>
+						<parameter name="containerId" isRequired="true" style="URI_CONTEXT">
+							<description>Container ID (eg. tenant or global).</description>
+						</parameter>
+						<parameter name="resourceType" isRequired="true"  isFixed="true" style="URI_CONTEXT">
+							<description>Replace selected object information.</description>
+						</parameter>
+						<parameter name="limit" isRequired="true" style="QUERYSTRING_PARAM">
+							<description>Specify a limit for the number of response results to be displayed (must be between 0 and 500).</description>
+						</parameter>
+						<parameter name="orderby" isRequired="false" style="QUERYSTRING_PARAM">
+							<description>Sort response by specified fields separated by “,” and/or prefix field with "-" for descending order.</description>
+						</parameter>
+						<parameter name="start" isRequired="false" style="QUERYSTRING_PARAM">
+							<description>The start value of the first orderBy field. Start value matches values in orderBy field (eg. strings or integers)</description>
+						</parameter>
+						<parameter name="properties" isRequired="false" style="QUERYSTRING_PARAM">
+							<description>A comma separated whitelist of top-level object properties to be returned in the response. Used to cut down the number of properties and amount of data returned in the response bodies.</description>
+						</parameter>
+					</parameters>
+					<handler nsName="wmadobe.experienceplatform_v1.schemaRegistry.interactions.QueryHandler" type="java"/>
+					<responses>
+						 <response name="queryResponse" code="200-599" messageFormatterType="application/octet+idataoref" builderType="application/json" documentRef="wmadobe.experienceplatform_v1.schemaRegistry.doctypes:record" excludeRoot="false"/>
+					</responses>
+				</resource>
+
+				<resource method="DELETE" path="/data/foundation/schemaregistry/{containerId}/{resourceType}/{id}" type="SIMPLE" name="deleteRecord" displayName="Delete">
+					<description>Deletes selected record.</description>
+					<parameters>
+						<parameter name="containerId" isRequired="true" style="URI_CONTEXT" dataType="Record" documentRef="wmadobe.experienceplatform_v1.schemaRegistry.doctypes:container">
+							<description>Container ID(eg. tenant or global)</description>
+						</parameter>
+						 <parameter name="resourceType" isRequired="true" style="URI_CONTEXT" dataType="Record" documentRef="wmadobe.experienceplatform_v1.schemaRegistry.doctypes:resourceType">
+							<description>Object to be deleted.</description>
+						</parameter>
+						<parameter name="id" isRequired="true" style="URI_CONTEXT">
+							<description>Id of the selected object.</description>
+						</parameter>						
+					</parameters>					
+					<responses>
+						 <response name="deleteResponse" code="200-204" messageFormatterType="application/octet+idataoref" builderType="application/json" documentRef="wmadobe.experienceplatform_v1.schemaRegistry.doctypes:deleteResponse" excludeRoot="false"/>
+						 <response name="error" code="400-599" messageFormatterType="application/octet+idataoref" builderType="application/json" documentRef="wmadobe.experienceplatform_v1.schemaRegistry.doctypes:errorResponse" excludeRoot="true"/>
+					</responses>
+				</resource>
+
+				<!-- REATES A DATASET FOR A CONNECTION TO INGEST DATA INTO AND PERSIST WITHIN PLATFORM. -->
+				<resource method="GET" path="/data/foundation/schemaregistry/stats" type="SIMPLE" name="stats" displayName="Stats">
+					<description>Return tenant id and Schema Registry usage information.</description>
+					<responses>
+						 <response name="statsResponse" code="200-207" messageFormatterType="application/octet+idataoref" builderType="application/json" documentRef="wmadobe.experienceplatform_v1.schemaRegistry.doctypes:statsResponse" excludeRoot="true"/>
+						 <response name="error" code="400-599" messageFormatterType="application/octet+idataoref" builderType="application/json" documentRef="wmadobe.experienceplatform_v1.schemaRegistry.doctypes:errorResponse" excludeRoot="true"/>
+					</responses>
+				</resource>
+			</resources>
+		</service>
+		
+		<service xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="RESTServiceType" endpoint="${cn.providerUrl}" name="streamingIngestionAPI" displayName="Streaming Ingestion API">
+			<documentModel nsName="wmadobe.experienceplatform_v1.streamingIngestionservice.doctypes" packageName="WmAdobeExperiencePlatformProvider" useInlineModel="true">
+				<abstractObject name="collectionObjects" type="businessObject">
+					<lookup type="boList" ref="wmadobe.experienceplatform_v1.streamingIngestionservice.lookups:boList"/>
+					<lookup type="boDescribe" ref="wmadobe.experienceplatform_v1.streamingIngestionservice.lookups:boDescribe"/>
+				</abstractObject>
+			</documentModel>
+			
+			<resources>
+				<mappings>
+					<map context="IN" name="apiKey" isFixed="true" displayName="apiKey" isRequired="true">
+						<source type="IDATA">jwt.cx.clientId</source>
+						<target type="HEADER">x-api-key</target>
+					</map>
+					<map context="IN" name="org_id" isFixed="true" displayName="org_id" isRequired="true">
+						<source type="IDATA">oauth_v20.iss</source>
+						<target type="HEADER">x-gw-ims-org-id</target>
+					</map>
+					<map context="IN" name="content_type" displayName="content_type" isRequired="true">
+						<source type="LITERAL">application/json</source>
+						<target type="HEADER">Content-Type</target>
+					</map>
+					<map context="IN" name="x_sandbox_name" displayName="x_sandbox_name" isRequired="true" isFixed="true">
+						<source type="IDATA">cx.sanbox_name</source>
+						<target type="HEADER">x-sandbox-name</target>
+					</map>
+					<map isRequired="true" isFixed="true" context="IN" name="UpdateEndpointURL" displayName="UpdateEndpointURL">
+					<source type="SERVICE">
+						<service nsName="wmadobe.experienceplatform_v1.utils.jwtAccessToken:updateEndpointURL">
+							<arg name="url">${cx.streamingUrl}</arg>
+						</service>
+					</source>
+					<target type="IDATA">cn.providerUrl</target>
+					</map>
+					<map isRequired="true" context="IN" name="Cache_Control" displayName="Cache_Control">
+						<source type="LITERAL">no-cache</source>
+						<target type="HEADER">Cache-Control</target>
+					</map>
+				</mappings>
+				
+				<!-- streaming Ingestion service resource -->
+				<resource method="POST" path="/{collection}/{inletId}" type="COMPLEX" name="streamingIngestion" displayName="Streaming Ingestion" >
+					<description>Publish messages to Adobe Experience Platform using the inlet ID.</description>
+					<mappings>
+						<map isRequired="true" isFixed="true" context="IN" name="objectMapping" displayName="objectMapping">
+							<source type="PARAMETER">core.businessObject</source>
+							<target type="PARAMETER">collection</target>
+						</map>
+					</mappings>
+					<parameters>
+						<parameter name="collection" isFixed="true" isRequired="true" style="URI_CONTEXT">
+							<description>Specify the path.</description>
+						</parameter>
+						<parameter name="inletId" isRequired="true" style="URI_CONTEXT">	
+							<description>The ID of the data inlet you want to delete.</description>
+						</parameter>
+						<parameter name="debug" isRequired="false" style="QUERYSTRING_PARAM">
+							<description>boolean values.</description>
+						</parameter>
+						<parameter name="synchronousValidation" isRequired="false" style="QUERYSTRING_PARAM">
+							<description>An optional query parameter intended for development purposes. Can be used for immediate feedback to determine if the request was successfully sent</description>
+						</parameter>
+					</parameters>
+					<handler nsName="wmadobe.experienceplatform_v1.streamingIngestionservice.interactions.StreamingIngestionHandler2" type="java"/>
+					
+					<request name="streamingResponse" messageFormatterType="application/json" builderType="application/octet+idataoref" documentRef="wmadobe.experienceplatform_v1.streamingIngestionservice.doctypes.create:collection" excludeRoot="false" />
+					
+					<responses>
+						<response name="collectionResponse" code="200-204" messageFormatterType="application/octet+idataoref" builderType="application/json" documentRef="wmadobe.experienceplatform_v1.streamingIngestionservice.doctypes:streamingResponse" excludeRoot="true"/>
+						<response name="errorResponse" code="400-599" messageFormatterType="application/octet+idataoref" builderType="application/json" documentRef="wmadobe.experienceplatform_v1.streamingIngestionservice.doctypes:errorResponse" excludeRoot="true"/>
+					</responses>
+				</resource>
+				
+				<!-- streaming Ingestion service resource -->
+				<resource method="POST" path="/{collection}/batch/{inletId}" type="COMPLEX" name="streamingBatchIngestion" displayName="Streaming Batch Ingestion" >
+					<description>Publish messages to Adobe Experience Platform using the inlet ID.</description>
+					<mappings>
+						<map isRequired="true" isFixed="true" context="IN" name="objectMapping" displayName="objectMapping">
+							<source type="PARAMETER">core.businessObject</source>
+							<target type="PARAMETER">collection</target>
+						</map>
+					</mappings>
+					<parameters>
+						<parameter name="collection" isFixed="true" isRequired="true" style="URI_CONTEXT">
+							<description>Specify the path.</description>
+						</parameter>
+						<parameter name="inletId" isRequired="true" style="URI_CONTEXT">	
+							<description>The ID of the data inlet you want to delete.</description>
+						</parameter>
+						<parameter name="debug" isRequired="false" style="QUERYSTRING_PARAM">
+							<description>boolean values.</description>
+						</parameter>
+						<parameter name="synchronousValidation" isRequired="false" style="QUERYSTRING_PARAM">
+							<description>An optional query parameter intended for development purposes. Can be used for immediate feedback to determine if the request was successfully sent</description>
+						</parameter>
+					</parameters>
+					<handler nsName="wmadobe.experienceplatform_v1.streamingIngestionservice.interactions.StreamingBatchIngestionHandler2" type="java"/>
+					
+					<request name="collection" messageFormatterType="application/json" builderType="application/octet+idataoref" documentRef="wmadobe.experienceplatform_v1.streamingIngestionservice.doctypes.create:collection" excludeRoot="false" />
+					
+					<responses>
+						<response name="streamingBatchResponse" code="200-208" messageFormatterType="application/octet+idataoref" builderType="application/json" documentRef="wmadobe.experienceplatform_v1.streamingIngestionservice.doctypes:streamingBatchResponse" excludeRoot="true"/>
+						<response name="errorResponse" code="400-599" messageFormatterType="application/octet+idataoref" builderType="application/json" documentRef="wmadobe.experienceplatform_v1.streamingIngestionservice.doctypes:errorResponse" excludeRoot="true"/>
+					</responses>
+				</resource>
+			</resources>
+		</service>
+		
+		<service  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="RESTServiceType" endpoint="${cn.providerUrl}" name="sandboxManagement" displayName="Sandbox Management">
+			
+			<documentModel packageName="WmAdobeExperiencePlatformProvider" nsName="wmadobe.experienceplatform_v1.sandboxManagement.doctypes" useInlineModel="true">
+				<abstractObject name="aepObject" type="businessObject">
+					<lookup type="boList" ref="wmadobe.experienceplatform_v1.sandboxManagement.lookups:boList"/>
+					<lookup type="boDescribe" ref="wmadobe.experienceplatform_v1.sandboxManagement.lookups:businessObjectDescribe"/>
+				</abstractObject>
+			</documentModel>
+			<resources>
+				<mappings>
+					<map context="IN" name="apiKey" displayName="apiKey" isRequired="true">
+						<source type="IDATA">jwt.cx.clientId</source>
+						<target type="HEADER">x-api-key</target>
+					 </map>
+					 <map context="IN" name="org_id" displayName="org_id" isRequired="true">
+						<source type="IDATA">oauth_v20.iss</source>
+						<target type="HEADER">x-gw-ims-org-id</target>
+					 </map>
+					 <map context="IN" name="Content_Type" displayName="Content_Type" isRequired="true">
+						<source type="LITERAL">application/json</source>
+						<target type="HEADER">Content-Type</target>
+					 </map>
+				</mappings>
+				
+				<!-- REATES A DATASET FOR A CONNECTION TO INGEST DATA INTO AND PERSIST WITHIN PLATFORM. -->
+				<resource method="GET" path="/data/foundation/sandbox-management/" type="SIMPLE" name="listSandboxes" displayName="List Sandboxes">
+					<description>List sandboxes from Adobe Platform.</description>					
+					<responses>
+						 <response name="sandboxes" code="200-207" messageFormatterType="application/octet+idataoref" builderType="application/json" documentRef="wmadobe.experienceplatform_v1.sandboxManagement.doctypes:sandbox" dimension="1"/>
+						 <response name="error" code="400-599" messageFormatterType="application/octet+idataoref" builderType="application/json" documentRef="wmadobe.experienceplatform_v1.partnerConnectors.doctypes:errorResponse" excludeRoot="true"/>
+					</responses>
+				</resource>
+			</resources>
+		</service>
+		
+	</services>
+</rest-connector>
