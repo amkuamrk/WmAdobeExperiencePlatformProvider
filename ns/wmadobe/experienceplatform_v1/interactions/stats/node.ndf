@@ -1,0 +1,1565 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<Values version="2.0">
+  <value name="svc_type">CloudService</value>
+  <value name="svc_subtype">REST</value>
+  <value name="svc_sigtype">unknown</value>
+  <record name="svc_sig" javaclass="com.wm.util.Values">
+    <record name="sig_in" javaclass="com.wm.util.Values">
+      <value name="node_type">record</value>
+      <value name="node_subtype">unknown</value>
+      <value name="is_public">false</value>
+      <value name="field_type">record</value>
+      <value name="field_dim">0</value>
+      <value name="wrapper_type">IData</value>
+      <value name="nillable">true</value>
+      <value name="form_qualified">false</value>
+      <value name="is_global">false</value>
+      <array name="rec_fields" type="record" depth="1">
+        <record javaclass="com.wm.util.Values">
+          <value name="node_type">record</value>
+          <value name="node_subtype">unknown</value>
+          <value name="is_public">false</value>
+          <value name="field_name">statsInput</value>
+          <value name="field_type">record</value>
+          <value name="field_dim">0</value>
+          <value name="wrapper_type">IData</value>
+          <value name="nillable">true</value>
+          <value name="form_qualified">false</value>
+          <value name="is_global">false</value>
+          <array name="rec_fields" type="record" depth="1">
+            <record javaclass="com.wm.util.Values">
+              <value name="node_type">record</value>
+              <value name="node_subtype">unknown</value>
+              <value name="is_public">false</value>
+              <value name="field_name">requestHeaders</value>
+              <value name="field_type">record</value>
+              <value name="field_dim">0</value>
+              <value name="nillable">true</value>
+              <value name="form_qualified">false</value>
+              <value name="is_global">false</value>
+              <array name="rec_fields" type="record" depth="1">
+                <record javaclass="com.wm.util.Values">
+                  <value name="node_type">unknown</value>
+                  <value name="node_subtype">unknown</value>
+                  <record name="node_hints" javaclass="com.wm.util.Values">
+                    <value name="field_default_value">jwt.cx.clientId</value>
+                    <Boolean name="field_fixed">true</Boolean>
+                  </record>
+                  <value name="is_public">false</value>
+                  <value name="field_name">x-api-key</value>
+                  <value name="field_type">string</value>
+                  <value name="field_dim">0</value>
+                  <value name="nillable">true</value>
+                  <value name="form_qualified">false</value>
+                  <value name="is_global">false</value>
+                </record>
+                <record javaclass="com.wm.util.Values">
+                  <value name="node_type">unknown</value>
+                  <value name="node_subtype">unknown</value>
+                  <record name="node_hints" javaclass="com.wm.util.Values">
+                    <value name="field_default_value">oauth_v20.iss</value>
+                    <Boolean name="field_fixed">true</Boolean>
+                  </record>
+                  <value name="is_public">false</value>
+                  <value name="field_name">x-gw-ims-org-id</value>
+                  <value name="field_type">string</value>
+                  <value name="field_dim">0</value>
+                  <value name="nillable">true</value>
+                  <value name="form_qualified">false</value>
+                  <value name="is_global">false</value>
+                </record>
+                <record javaclass="com.wm.util.Values">
+                  <value name="node_type">unknown</value>
+                  <value name="node_subtype">unknown</value>
+                  <record name="node_hints" javaclass="com.wm.util.Values">
+                    <value name="field_default_value">application/json</value>
+                    <Boolean name="field_fixed">false</Boolean>
+                  </record>
+                  <value name="is_public">false</value>
+                  <value name="field_name">Content-Type</value>
+                  <value name="field_type">string</value>
+                  <value name="field_dim">0</value>
+                  <value name="nillable">true</value>
+                  <value name="form_qualified">false</value>
+                  <value name="is_global">false</value>
+                </record>
+                <record javaclass="com.wm.util.Values">
+                  <value name="node_type">unknown</value>
+                  <value name="node_subtype">unknown</value>
+                  <record name="node_hints" javaclass="com.wm.util.Values">
+                    <value name="field_default_value">cx.sanbox_name</value>
+                    <Boolean name="field_fixed">true</Boolean>
+                  </record>
+                  <value name="is_public">false</value>
+                  <value name="field_name">x-sandbox-name</value>
+                  <value name="field_type">string</value>
+                  <value name="field_dim">0</value>
+                  <value name="nillable">true</value>
+                  <value name="form_qualified">false</value>
+                  <value name="is_global">false</value>
+                </record>
+              </array>
+              <value name="modifiable">true</value>
+            </record>
+          </array>
+          <value name="modifiable">true</value>
+        </record>
+        <record javaclass="com.wm.util.Values">
+          <value name="node_type">unknown</value>
+          <value name="node_subtype">unknown</value>
+          <value name="is_public">false</value>
+          <value name="field_name">$connectionAlias</value>
+          <value name="field_type">string</value>
+          <value name="field_dim">0</value>
+          <value name="field_opt">true</value>
+          <value name="nillable">true</value>
+          <value name="form_qualified">false</value>
+          <value name="is_global">false</value>
+        </record>
+      </array>
+      <value name="modifiable">true</value>
+    </record>
+    <record name="sig_out" javaclass="com.wm.util.Values">
+      <value name="node_type">record</value>
+      <value name="node_subtype">unknown</value>
+      <value name="is_public">false</value>
+      <value name="field_type">record</value>
+      <value name="field_dim">0</value>
+      <value name="wrapper_type">IData</value>
+      <value name="nillable">true</value>
+      <value name="form_qualified">false</value>
+      <value name="is_global">false</value>
+      <array name="rec_fields" type="record" depth="1">
+        <record javaclass="com.wm.util.Values">
+          <value name="node_type">record</value>
+          <value name="node_subtype">unknown</value>
+          <value name="is_public">false</value>
+          <value name="field_name">statsOutput</value>
+          <value name="field_type">record</value>
+          <value name="field_dim">0</value>
+          <value name="wrapper_type">IData</value>
+          <value name="nillable">true</value>
+          <value name="form_qualified">false</value>
+          <value name="is_global">false</value>
+          <array name="rec_fields" type="record" depth="1">
+            <record javaclass="com.wm.util.Values">
+              <value name="node_type">unknown</value>
+              <value name="node_subtype">unknown</value>
+              <value name="is_public">false</value>
+              <value name="field_name">status</value>
+              <value name="field_type">string</value>
+              <value name="field_dim">0</value>
+              <value name="nillable">true</value>
+              <value name="form_qualified">false</value>
+              <value name="is_global">false</value>
+            </record>
+            <record javaclass="com.wm.util.Values">
+              <value name="node_type">unknown</value>
+              <value name="node_subtype">unknown</value>
+              <value name="is_public">false</value>
+              <value name="field_name">statusMessage</value>
+              <value name="field_type">string</value>
+              <value name="field_dim">0</value>
+              <value name="nillable">true</value>
+              <value name="form_qualified">false</value>
+              <value name="is_global">false</value>
+            </record>
+            <record javaclass="com.wm.util.Values">
+              <value name="node_type">record</value>
+              <value name="node_subtype">unknown</value>
+              <value name="is_public">false</value>
+              <value name="field_name">responseBody</value>
+              <value name="field_type">record</value>
+              <value name="field_dim">0</value>
+              <value name="nillable">true</value>
+              <value name="form_qualified">false</value>
+              <value name="is_global">false</value>
+              <array name="rec_fields" type="record" depth="1">
+                <record javaclass="com.wm.util.Values">
+                  <value name="node_type">record</value>
+                  <value name="node_subtype">unknown</value>
+                  <value name="node_comment">generated by webMethods</value>
+                  <value name="is_public">false</value>
+                  <value name="field_name">statsResponse</value>
+                  <value name="field_type">record</value>
+                  <value name="field_dim">0</value>
+                  <value name="field_opt">true</value>
+                  <value name="wrapper_type">IData</value>
+                  <value name="nillable">true</value>
+                  <value name="form_qualified">false</value>
+                  <value name="is_global">false</value>
+                  <value name="originURI">file:///C:\Users\amrk\Documents\statusResponse.json</value>
+                  <array name="rec_fields" type="record" depth="1">
+                    <record javaclass="com.wm.util.Values">
+                      <value name="node_type">unknown</value>
+                      <value name="node_subtype">unknown</value>
+                      <value name="node_comment"></value>
+                      <record name="node_hints" javaclass="com.wm.util.Values">
+                        <value name="field_usereditable">true</value>
+                        <value name="field_largerEditor">false</value>
+                        <value name="field_password">false</value>
+                      </record>
+                      <value name="is_public">false</value>
+                      <value name="field_name">imsOrg</value>
+                      <value name="field_type">string</value>
+                      <value name="field_dim">0</value>
+                      <value name="field_opt">true</value>
+                      <array name="field_options" type="value" depth="1">
+                      </array>
+                      <value name="nillable">true</value>
+                      <value name="form_qualified">false</value>
+                      <value name="is_global">false</value>
+                    </record>
+                    <record javaclass="com.wm.util.Values">
+                      <value name="node_type">unknown</value>
+                      <value name="node_subtype">unknown</value>
+                      <value name="node_comment"></value>
+                      <record name="node_hints" javaclass="com.wm.util.Values">
+                        <value name="field_usereditable">true</value>
+                        <value name="field_largerEditor">false</value>
+                        <value name="field_password">false</value>
+                      </record>
+                      <value name="is_public">false</value>
+                      <value name="field_name">tenantId</value>
+                      <value name="field_type">string</value>
+                      <value name="field_dim">0</value>
+                      <value name="field_opt">true</value>
+                      <array name="field_options" type="value" depth="1">
+                      </array>
+                      <value name="nillable">true</value>
+                      <value name="form_qualified">false</value>
+                      <value name="is_global">false</value>
+                    </record>
+                    <record javaclass="com.wm.util.Values">
+                      <value name="node_type">record</value>
+                      <value name="node_subtype">unknown</value>
+                      <value name="node_comment"></value>
+                      <record name="node_hints" javaclass="com.wm.util.Values">
+                        <value name="field_largerEditor">false</value>
+                        <value name="field_password">false</value>
+                      </record>
+                      <value name="is_public">false</value>
+                      <value name="field_name">counts</value>
+                      <value name="field_type">record</value>
+                      <value name="field_dim">0</value>
+                      <value name="field_opt">true</value>
+                      <value name="wrapper_type">IData</value>
+                      <value name="nillable">true</value>
+                      <value name="form_qualified">false</value>
+                      <value name="is_global">false</value>
+                      <array name="rec_fields" type="record" depth="1">
+                        <record javaclass="com.wm.util.Values">
+                          <value name="node_type">unknown</value>
+                          <value name="node_subtype">unknown</value>
+                          <value name="node_comment"></value>
+                          <record name="node_hints" javaclass="com.wm.util.Values">
+                            <value name="field_largerEditor">false</value>
+                            <value name="field_password">false</value>
+                          </record>
+                          <value name="is_public">false</value>
+                          <value name="field_name">schemas</value>
+                          <value name="field_type">object</value>
+                          <value name="field_dim">0</value>
+                          <value name="field_opt">true</value>
+                          <value name="wrapper_type">java.lang.Long</value>
+                          <value name="nillable">true</value>
+                          <value name="form_qualified">false</value>
+                          <value name="is_global">false</value>
+                        </record>
+                        <record javaclass="com.wm.util.Values">
+                          <value name="node_type">unknown</value>
+                          <value name="node_subtype">unknown</value>
+                          <value name="node_comment"></value>
+                          <record name="node_hints" javaclass="com.wm.util.Values">
+                            <value name="field_largerEditor">false</value>
+                            <value name="field_password">false</value>
+                          </record>
+                          <value name="is_public">false</value>
+                          <value name="field_name">mixins</value>
+                          <value name="field_type">object</value>
+                          <value name="field_dim">0</value>
+                          <value name="field_opt">true</value>
+                          <value name="wrapper_type">java.lang.Long</value>
+                          <value name="nillable">true</value>
+                          <value name="form_qualified">false</value>
+                          <value name="is_global">false</value>
+                        </record>
+                        <record javaclass="com.wm.util.Values">
+                          <value name="node_type">unknown</value>
+                          <value name="node_subtype">unknown</value>
+                          <value name="node_comment"></value>
+                          <record name="node_hints" javaclass="com.wm.util.Values">
+                            <value name="field_largerEditor">false</value>
+                            <value name="field_password">false</value>
+                          </record>
+                          <value name="is_public">false</value>
+                          <value name="field_name">datatypes</value>
+                          <value name="field_type">object</value>
+                          <value name="field_dim">0</value>
+                          <value name="field_opt">true</value>
+                          <value name="wrapper_type">java.lang.Long</value>
+                          <value name="nillable">true</value>
+                          <value name="form_qualified">false</value>
+                          <value name="is_global">false</value>
+                        </record>
+                        <record javaclass="com.wm.util.Values">
+                          <value name="node_type">unknown</value>
+                          <value name="node_subtype">unknown</value>
+                          <value name="node_comment"></value>
+                          <record name="node_hints" javaclass="com.wm.util.Values">
+                            <value name="field_largerEditor">false</value>
+                            <value name="field_password">false</value>
+                          </record>
+                          <value name="is_public">false</value>
+                          <value name="field_name">classes</value>
+                          <value name="field_type">object</value>
+                          <value name="field_dim">0</value>
+                          <value name="field_opt">true</value>
+                          <value name="wrapper_type">java.lang.Long</value>
+                          <value name="nillable">true</value>
+                          <value name="form_qualified">false</value>
+                          <value name="is_global">false</value>
+                        </record>
+                        <record javaclass="com.wm.util.Values">
+                          <value name="node_type">unknown</value>
+                          <value name="node_subtype">unknown</value>
+                          <value name="node_comment"></value>
+                          <record name="node_hints" javaclass="com.wm.util.Values">
+                            <value name="field_largerEditor">false</value>
+                            <value name="field_password">false</value>
+                          </record>
+                          <value name="is_public">false</value>
+                          <value name="field_name">unions</value>
+                          <value name="field_type">object</value>
+                          <value name="field_dim">0</value>
+                          <value name="field_opt">true</value>
+                          <value name="wrapper_type">java.lang.Long</value>
+                          <value name="nillable">true</value>
+                          <value name="form_qualified">false</value>
+                          <value name="is_global">false</value>
+                        </record>
+                      </array>
+                      <value name="modifiable">true</value>
+                    </record>
+                    <record javaclass="com.wm.util.Values">
+                      <value name="node_type">record</value>
+                      <value name="node_subtype">unknown</value>
+                      <value name="node_comment"></value>
+                      <record name="node_hints" javaclass="com.wm.util.Values">
+                        <value name="field_largerEditor">false</value>
+                        <value name="field_password">false</value>
+                      </record>
+                      <value name="is_public">false</value>
+                      <value name="field_name">recentlyCreatedResources</value>
+                      <value name="field_type">record</value>
+                      <value name="field_dim">1</value>
+                      <value name="field_opt">true</value>
+                      <value name="wrapper_type">IData</value>
+                      <value name="nillable">true</value>
+                      <value name="form_qualified">false</value>
+                      <value name="is_global">false</value>
+                      <value name="is_soap_array_encoding_used">false</value>
+                      <array name="rec_fields" type="record" depth="1">
+                        <record javaclass="com.wm.util.Values">
+                          <value name="node_type">record</value>
+                          <value name="node_subtype">unknown</value>
+                          <value name="node_comment"></value>
+                          <record name="node_hints" javaclass="com.wm.util.Values">
+                            <value name="field_usereditable">true</value>
+                            <value name="field_largerEditor">false</value>
+                            <value name="field_password">false</value>
+                          </record>
+                          <value name="is_public">false</value>
+                          <value name="field_name">$id</value>
+                          <value name="field_type">string</value>
+                          <value name="field_dim">0</value>
+                          <value name="field_opt">true</value>
+                          <array name="field_options" type="value" depth="1">
+                          </array>
+                          <value name="nillable">true</value>
+                          <value name="form_qualified">false</value>
+                          <value name="is_global">false</value>
+                        </record>
+                        <record javaclass="com.wm.util.Values">
+                          <value name="node_type">record</value>
+                          <value name="node_subtype">unknown</value>
+                          <value name="node_comment"></value>
+                          <record name="node_hints" javaclass="com.wm.util.Values">
+                            <value name="field_usereditable">true</value>
+                            <value name="field_largerEditor">false</value>
+                            <value name="field_password">false</value>
+                          </record>
+                          <value name="is_public">false</value>
+                          <value name="field_name">title</value>
+                          <value name="field_type">string</value>
+                          <value name="field_dim">0</value>
+                          <value name="field_opt">true</value>
+                          <array name="field_options" type="value" depth="1">
+                          </array>
+                          <value name="nillable">true</value>
+                          <value name="form_qualified">false</value>
+                          <value name="is_global">false</value>
+                        </record>
+                        <record javaclass="com.wm.util.Values">
+                          <value name="node_type">record</value>
+                          <value name="node_subtype">unknown</value>
+                          <value name="node_comment"></value>
+                          <record name="node_hints" javaclass="com.wm.util.Values">
+                            <value name="field_usereditable">true</value>
+                            <value name="field_largerEditor">false</value>
+                            <value name="field_password">false</value>
+                          </record>
+                          <value name="is_public">false</value>
+                          <value name="field_name">description</value>
+                          <value name="field_type">string</value>
+                          <value name="field_dim">0</value>
+                          <value name="field_opt">true</value>
+                          <array name="field_options" type="value" depth="1">
+                          </array>
+                          <value name="nillable">true</value>
+                          <value name="form_qualified">false</value>
+                          <value name="is_global">false</value>
+                        </record>
+                        <record javaclass="com.wm.util.Values">
+                          <value name="node_type">record</value>
+                          <value name="node_subtype">unknown</value>
+                          <value name="node_comment"></value>
+                          <record name="node_hints" javaclass="com.wm.util.Values">
+                            <value name="field_usereditable">true</value>
+                            <value name="field_largerEditor">false</value>
+                            <value name="field_password">false</value>
+                          </record>
+                          <value name="is_public">false</value>
+                          <value name="field_name">meta:resourceType</value>
+                          <value name="field_type">string</value>
+                          <value name="field_dim">0</value>
+                          <value name="field_opt">true</value>
+                          <array name="field_options" type="value" depth="1">
+                          </array>
+                          <value name="nillable">true</value>
+                          <value name="form_qualified">false</value>
+                          <value name="is_global">false</value>
+                        </record>
+                        <record javaclass="com.wm.util.Values">
+                          <value name="node_type">record</value>
+                          <value name="node_subtype">unknown</value>
+                          <value name="node_comment"></value>
+                          <record name="node_hints" javaclass="com.wm.util.Values">
+                            <value name="field_usereditable">true</value>
+                            <value name="field_largerEditor">false</value>
+                            <value name="field_password">false</value>
+                          </record>
+                          <value name="is_public">false</value>
+                          <value name="field_name">meta:created</value>
+                          <value name="field_type">string</value>
+                          <value name="field_dim">0</value>
+                          <value name="field_opt">true</value>
+                          <array name="field_options" type="value" depth="1">
+                          </array>
+                          <value name="nillable">true</value>
+                          <value name="form_qualified">false</value>
+                          <value name="is_global">false</value>
+                        </record>
+                        <record javaclass="com.wm.util.Values">
+                          <value name="node_type">record</value>
+                          <value name="node_subtype">unknown</value>
+                          <value name="node_comment"></value>
+                          <record name="node_hints" javaclass="com.wm.util.Values">
+                            <value name="field_usereditable">true</value>
+                            <value name="field_largerEditor">false</value>
+                            <value name="field_password">false</value>
+                          </record>
+                          <value name="is_public">false</value>
+                          <value name="field_name">meta:class</value>
+                          <value name="field_type">string</value>
+                          <value name="field_dim">0</value>
+                          <value name="field_opt">true</value>
+                          <array name="field_options" type="value" depth="1">
+                          </array>
+                          <value name="nillable">true</value>
+                          <value name="form_qualified">false</value>
+                          <value name="is_global">false</value>
+                        </record>
+                        <record javaclass="com.wm.util.Values">
+                          <value name="node_type">record</value>
+                          <value name="node_subtype">unknown</value>
+                          <value name="node_comment"></value>
+                          <record name="node_hints" javaclass="com.wm.util.Values">
+                            <value name="field_usereditable">true</value>
+                            <value name="field_largerEditor">false</value>
+                            <value name="field_password">false</value>
+                          </record>
+                          <value name="is_public">false</value>
+                          <value name="field_name">meta:classTitle</value>
+                          <value name="field_type">string</value>
+                          <value name="field_dim">0</value>
+                          <value name="field_opt">true</value>
+                          <array name="field_options" type="value" depth="1">
+                          </array>
+                          <value name="nillable">true</value>
+                          <value name="form_qualified">false</value>
+                          <value name="is_global">false</value>
+                        </record>
+                        <record javaclass="com.wm.util.Values">
+                          <value name="node_type">record</value>
+                          <value name="node_subtype">unknown</value>
+                          <value name="node_comment"></value>
+                          <record name="node_hints" javaclass="com.wm.util.Values">
+                            <value name="field_usereditable">true</value>
+                            <value name="field_largerEditor">false</value>
+                            <value name="field_password">false</value>
+                          </record>
+                          <value name="is_public">false</value>
+                          <value name="field_name">version</value>
+                          <value name="field_type">string</value>
+                          <value name="field_dim">0</value>
+                          <value name="field_opt">true</value>
+                          <array name="field_options" type="value" depth="1">
+                          </array>
+                          <value name="nillable">true</value>
+                          <value name="form_qualified">false</value>
+                          <value name="is_global">false</value>
+                        </record>
+                      </array>
+                      <value name="modifiable">true</value>
+                    </record>
+                    <record javaclass="com.wm.util.Values">
+                      <value name="node_type">record</value>
+                      <value name="node_subtype">unknown</value>
+                      <value name="node_comment"></value>
+                      <record name="node_hints" javaclass="com.wm.util.Values">
+                        <value name="field_largerEditor">false</value>
+                        <value name="field_password">false</value>
+                      </record>
+                      <value name="is_public">false</value>
+                      <value name="field_name">recentlyUpdatedResources</value>
+                      <value name="field_type">record</value>
+                      <value name="field_dim">1</value>
+                      <value name="field_opt">true</value>
+                      <value name="wrapper_type">IData</value>
+                      <value name="nillable">true</value>
+                      <value name="form_qualified">false</value>
+                      <value name="is_global">false</value>
+                      <value name="is_soap_array_encoding_used">false</value>
+                      <array name="rec_fields" type="record" depth="1">
+                        <record javaclass="com.wm.util.Values">
+                          <value name="node_type">record</value>
+                          <value name="node_subtype">unknown</value>
+                          <value name="node_comment"></value>
+                          <record name="node_hints" javaclass="com.wm.util.Values">
+                            <value name="field_usereditable">true</value>
+                            <value name="field_largerEditor">false</value>
+                            <value name="field_password">false</value>
+                          </record>
+                          <value name="is_public">false</value>
+                          <value name="field_name">$id</value>
+                          <value name="field_type">string</value>
+                          <value name="field_dim">0</value>
+                          <value name="field_opt">true</value>
+                          <array name="field_options" type="value" depth="1">
+                          </array>
+                          <value name="nillable">true</value>
+                          <value name="form_qualified">false</value>
+                          <value name="is_global">false</value>
+                        </record>
+                        <record javaclass="com.wm.util.Values">
+                          <value name="node_type">record</value>
+                          <value name="node_subtype">unknown</value>
+                          <value name="node_comment"></value>
+                          <record name="node_hints" javaclass="com.wm.util.Values">
+                            <value name="field_usereditable">true</value>
+                            <value name="field_largerEditor">false</value>
+                            <value name="field_password">false</value>
+                          </record>
+                          <value name="is_public">false</value>
+                          <value name="field_name">title</value>
+                          <value name="field_type">string</value>
+                          <value name="field_dim">0</value>
+                          <value name="field_opt">true</value>
+                          <array name="field_options" type="value" depth="1">
+                          </array>
+                          <value name="nillable">true</value>
+                          <value name="form_qualified">false</value>
+                          <value name="is_global">false</value>
+                        </record>
+                        <record javaclass="com.wm.util.Values">
+                          <value name="node_type">record</value>
+                          <value name="node_subtype">unknown</value>
+                          <value name="node_comment"></value>
+                          <record name="node_hints" javaclass="com.wm.util.Values">
+                            <value name="field_usereditable">true</value>
+                            <value name="field_largerEditor">false</value>
+                            <value name="field_password">false</value>
+                          </record>
+                          <value name="is_public">false</value>
+                          <value name="field_name">description</value>
+                          <value name="field_type">string</value>
+                          <value name="field_dim">0</value>
+                          <value name="field_opt">true</value>
+                          <array name="field_options" type="value" depth="1">
+                          </array>
+                          <value name="nillable">true</value>
+                          <value name="form_qualified">false</value>
+                          <value name="is_global">false</value>
+                        </record>
+                        <record javaclass="com.wm.util.Values">
+                          <value name="node_type">record</value>
+                          <value name="node_subtype">unknown</value>
+                          <value name="node_comment"></value>
+                          <record name="node_hints" javaclass="com.wm.util.Values">
+                            <value name="field_usereditable">true</value>
+                            <value name="field_largerEditor">false</value>
+                            <value name="field_password">false</value>
+                          </record>
+                          <value name="is_public">false</value>
+                          <value name="field_name">meta:resourceType</value>
+                          <value name="field_type">string</value>
+                          <value name="field_dim">0</value>
+                          <value name="field_opt">true</value>
+                          <array name="field_options" type="value" depth="1">
+                          </array>
+                          <value name="nillable">true</value>
+                          <value name="form_qualified">false</value>
+                          <value name="is_global">false</value>
+                        </record>
+                        <record javaclass="com.wm.util.Values">
+                          <value name="node_type">record</value>
+                          <value name="node_subtype">unknown</value>
+                          <value name="node_comment"></value>
+                          <record name="node_hints" javaclass="com.wm.util.Values">
+                            <value name="field_usereditable">true</value>
+                            <value name="field_largerEditor">false</value>
+                            <value name="field_password">false</value>
+                          </record>
+                          <value name="is_public">false</value>
+                          <value name="field_name">meta:updated</value>
+                          <value name="field_type">string</value>
+                          <value name="field_dim">0</value>
+                          <value name="field_opt">true</value>
+                          <array name="field_options" type="value" depth="1">
+                          </array>
+                          <value name="nillable">true</value>
+                          <value name="form_qualified">false</value>
+                          <value name="is_global">false</value>
+                        </record>
+                        <record javaclass="com.wm.util.Values">
+                          <value name="node_type">record</value>
+                          <value name="node_subtype">unknown</value>
+                          <value name="node_comment"></value>
+                          <record name="node_hints" javaclass="com.wm.util.Values">
+                            <value name="field_usereditable">true</value>
+                            <value name="field_largerEditor">false</value>
+                            <value name="field_password">false</value>
+                          </record>
+                          <value name="is_public">false</value>
+                          <value name="field_name">meta:class</value>
+                          <value name="field_type">string</value>
+                          <value name="field_dim">0</value>
+                          <value name="field_opt">true</value>
+                          <array name="field_options" type="value" depth="1">
+                          </array>
+                          <value name="nillable">true</value>
+                          <value name="form_qualified">false</value>
+                          <value name="is_global">false</value>
+                        </record>
+                        <record javaclass="com.wm.util.Values">
+                          <value name="node_type">record</value>
+                          <value name="node_subtype">unknown</value>
+                          <value name="node_comment"></value>
+                          <record name="node_hints" javaclass="com.wm.util.Values">
+                            <value name="field_usereditable">true</value>
+                            <value name="field_largerEditor">false</value>
+                            <value name="field_password">false</value>
+                          </record>
+                          <value name="is_public">false</value>
+                          <value name="field_name">meta:classTitle</value>
+                          <value name="field_type">string</value>
+                          <value name="field_dim">0</value>
+                          <value name="field_opt">true</value>
+                          <array name="field_options" type="value" depth="1">
+                          </array>
+                          <value name="nillable">true</value>
+                          <value name="form_qualified">false</value>
+                          <value name="is_global">false</value>
+                        </record>
+                        <record javaclass="com.wm.util.Values">
+                          <value name="node_type">record</value>
+                          <value name="node_subtype">unknown</value>
+                          <value name="node_comment"></value>
+                          <record name="node_hints" javaclass="com.wm.util.Values">
+                            <value name="field_usereditable">true</value>
+                            <value name="field_largerEditor">false</value>
+                            <value name="field_password">false</value>
+                          </record>
+                          <value name="is_public">false</value>
+                          <value name="field_name">version</value>
+                          <value name="field_type">string</value>
+                          <value name="field_dim">0</value>
+                          <value name="field_opt">true</value>
+                          <array name="field_options" type="value" depth="1">
+                          </array>
+                          <value name="nillable">true</value>
+                          <value name="form_qualified">false</value>
+                          <value name="is_global">false</value>
+                        </record>
+                      </array>
+                      <value name="modifiable">true</value>
+                    </record>
+                    <record javaclass="com.wm.util.Values">
+                      <value name="node_type">record</value>
+                      <value name="node_subtype">unknown</value>
+                      <value name="node_comment"></value>
+                      <record name="node_hints" javaclass="com.wm.util.Values">
+                        <value name="field_largerEditor">false</value>
+                        <value name="field_password">false</value>
+                      </record>
+                      <value name="is_public">false</value>
+                      <value name="field_name">classUsage</value>
+                      <value name="field_type">record</value>
+                      <value name="field_dim">1</value>
+                      <value name="field_opt">true</value>
+                      <value name="wrapper_type">IData</value>
+                      <value name="nillable">true</value>
+                      <value name="form_qualified">false</value>
+                      <value name="is_global">false</value>
+                      <value name="is_soap_array_encoding_used">false</value>
+                      <array name="rec_fields" type="record" depth="1">
+                        <record javaclass="com.wm.util.Values">
+                          <value name="node_type">record</value>
+                          <value name="node_subtype">unknown</value>
+                          <value name="node_comment"></value>
+                          <record name="node_hints" javaclass="com.wm.util.Values">
+                            <value name="field_largerEditor">false</value>
+                            <value name="field_password">false</value>
+                          </record>
+                          <value name="is_public">false</value>
+                          <value name="field_name">https://ns.adobe.com/xdm/context/profile</value>
+                          <value name="field_type">record</value>
+                          <value name="field_dim">1</value>
+                          <value name="field_opt">true</value>
+                          <value name="wrapper_type">IData</value>
+                          <value name="nillable">true</value>
+                          <value name="form_qualified">false</value>
+                          <value name="is_global">false</value>
+                          <value name="is_soap_array_encoding_used">false</value>
+                          <array name="rec_fields" type="record" depth="1">
+                            <record javaclass="com.wm.util.Values">
+                              <value name="node_type">unknown</value>
+                              <value name="node_subtype">unknown</value>
+                              <value name="node_comment"></value>
+                              <record name="node_hints" javaclass="com.wm.util.Values">
+                                <value name="field_usereditable">true</value>
+                                <value name="field_largerEditor">false</value>
+                                <value name="field_password">false</value>
+                              </record>
+                              <value name="is_public">false</value>
+                              <value name="field_name">$id</value>
+                              <value name="field_type">string</value>
+                              <value name="field_dim">0</value>
+                              <value name="field_opt">true</value>
+                              <array name="field_options" type="value" depth="1">
+                              </array>
+                              <value name="nillable">true</value>
+                              <value name="form_qualified">false</value>
+                              <value name="is_global">false</value>
+                            </record>
+                            <record javaclass="com.wm.util.Values">
+                              <value name="node_type">unknown</value>
+                              <value name="node_subtype">unknown</value>
+                              <value name="node_comment"></value>
+                              <record name="node_hints" javaclass="com.wm.util.Values">
+                                <value name="field_usereditable">true</value>
+                                <value name="field_largerEditor">false</value>
+                                <value name="field_password">false</value>
+                              </record>
+                              <value name="is_public">false</value>
+                              <value name="field_name">title</value>
+                              <value name="field_type">string</value>
+                              <value name="field_dim">0</value>
+                              <value name="field_opt">true</value>
+                              <array name="field_options" type="value" depth="1">
+                              </array>
+                              <value name="nillable">true</value>
+                              <value name="form_qualified">false</value>
+                              <value name="is_global">false</value>
+                            </record>
+                            <record javaclass="com.wm.util.Values">
+                              <value name="node_type">unknown</value>
+                              <value name="node_subtype">unknown</value>
+                              <value name="node_comment"></value>
+                              <record name="node_hints" javaclass="com.wm.util.Values">
+                                <value name="field_usereditable">true</value>
+                                <value name="field_largerEditor">false</value>
+                                <value name="field_password">false</value>
+                              </record>
+                              <value name="is_public">false</value>
+                              <value name="field_name">description</value>
+                              <value name="field_type">string</value>
+                              <value name="field_dim">0</value>
+                              <value name="field_opt">true</value>
+                              <array name="field_options" type="value" depth="1">
+                              </array>
+                              <value name="nillable">true</value>
+                              <value name="form_qualified">false</value>
+                              <value name="is_global">false</value>
+                            </record>
+                          </array>
+                          <value name="modifiable">true</value>
+                        </record>
+                        <record javaclass="com.wm.util.Values">
+                          <value name="node_type">unknown</value>
+                          <value name="node_subtype">unknown</value>
+                          <value name="node_comment"></value>
+                          <record name="node_hints" javaclass="com.wm.util.Values">
+                            <value name="field_usereditable">true</value>
+                            <value name="field_largerEditor">false</value>
+                            <value name="field_password">false</value>
+                          </record>
+                          <value name="is_public">false</value>
+                          <value name="field_name">$id</value>
+                          <value name="field_type">string</value>
+                          <value name="field_dim">0</value>
+                          <value name="field_opt">true</value>
+                          <array name="field_options" type="value" depth="1">
+                          </array>
+                          <value name="nillable">true</value>
+                          <value name="form_qualified">false</value>
+                          <value name="is_global">false</value>
+                        </record>
+                        <record javaclass="com.wm.util.Values">
+                          <value name="node_type">unknown</value>
+                          <value name="node_subtype">unknown</value>
+                          <value name="node_comment"></value>
+                          <record name="node_hints" javaclass="com.wm.util.Values">
+                            <value name="field_usereditable">true</value>
+                            <value name="field_largerEditor">false</value>
+                            <value name="field_password">false</value>
+                          </record>
+                          <value name="is_public">false</value>
+                          <value name="field_name">title</value>
+                          <value name="field_type">string</value>
+                          <value name="field_dim">0</value>
+                          <value name="field_opt">true</value>
+                          <array name="field_options" type="value" depth="1">
+                          </array>
+                          <value name="nillable">true</value>
+                          <value name="form_qualified">false</value>
+                          <value name="is_global">false</value>
+                        </record>
+                        <record javaclass="com.wm.util.Values">
+                          <value name="node_type">record</value>
+                          <value name="node_subtype">unknown</value>
+                          <value name="node_comment"></value>
+                          <record name="node_hints" javaclass="com.wm.util.Values">
+                            <value name="field_largerEditor">false</value>
+                            <value name="field_password">false</value>
+                          </record>
+                          <value name="is_public">false</value>
+                          <value name="field_name">numberOfSchemas</value>
+                          <value name="field_type">object</value>
+                          <value name="field_dim">0</value>
+                          <value name="field_opt">true</value>
+                          <value name="wrapper_type">java.lang.Long</value>
+                          <value name="nillable">true</value>
+                          <value name="form_qualified">false</value>
+                          <value name="is_global">false</value>
+                        </record>
+                        <record javaclass="com.wm.util.Values">
+                          <value name="node_type">record</value>
+                          <value name="node_subtype">unknown</value>
+                          <value name="node_comment"></value>
+                          <record name="node_hints" javaclass="com.wm.util.Values">
+                            <value name="field_largerEditor">false</value>
+                            <value name="field_password">false</value>
+                          </record>
+                          <value name="is_public">false</value>
+                          <value name="field_name">schemas</value>
+                          <value name="field_type">record</value>
+                          <value name="field_dim">1</value>
+                          <value name="field_opt">true</value>
+                          <value name="wrapper_type">IData</value>
+                          <value name="nillable">true</value>
+                          <value name="form_qualified">false</value>
+                          <value name="is_global">false</value>
+                          <value name="is_soap_array_encoding_used">false</value>
+                          <array name="rec_fields" type="record" depth="1">
+                            <record javaclass="com.wm.util.Values">
+                              <value name="node_type">unknown</value>
+                              <value name="node_subtype">unknown</value>
+                              <value name="node_comment"></value>
+                              <record name="node_hints" javaclass="com.wm.util.Values">
+                                <value name="field_usereditable">true</value>
+                                <value name="field_largerEditor">false</value>
+                                <value name="field_password">false</value>
+                              </record>
+                              <value name="is_public">false</value>
+                              <value name="field_name">$id</value>
+                              <value name="field_type">string</value>
+                              <value name="field_dim">0</value>
+                              <value name="field_opt">true</value>
+                              <array name="field_options" type="value" depth="1">
+                              </array>
+                              <value name="nillable">true</value>
+                              <value name="form_qualified">false</value>
+                              <value name="is_global">false</value>
+                            </record>
+                            <record javaclass="com.wm.util.Values">
+                              <value name="node_type">unknown</value>
+                              <value name="node_subtype">unknown</value>
+                              <value name="node_comment"></value>
+                              <record name="node_hints" javaclass="com.wm.util.Values">
+                                <value name="field_usereditable">true</value>
+                                <value name="field_largerEditor">false</value>
+                                <value name="field_password">false</value>
+                              </record>
+                              <value name="is_public">false</value>
+                              <value name="field_name">title</value>
+                              <value name="field_type">string</value>
+                              <value name="field_dim">0</value>
+                              <value name="field_opt">true</value>
+                              <array name="field_options" type="value" depth="1">
+                              </array>
+                              <value name="nillable">true</value>
+                              <value name="form_qualified">false</value>
+                              <value name="is_global">false</value>
+                            </record>
+                            <record javaclass="com.wm.util.Values">
+                              <value name="node_type">unknown</value>
+                              <value name="node_subtype">unknown</value>
+                              <value name="node_comment"></value>
+                              <record name="node_hints" javaclass="com.wm.util.Values">
+                                <value name="field_usereditable">true</value>
+                                <value name="field_largerEditor">false</value>
+                                <value name="field_password">false</value>
+                              </record>
+                              <value name="is_public">false</value>
+                              <value name="field_name">description</value>
+                              <value name="field_type">string</value>
+                              <value name="field_dim">0</value>
+                              <value name="field_opt">true</value>
+                              <array name="field_options" type="value" depth="1">
+                              </array>
+                              <value name="nillable">true</value>
+                              <value name="form_qualified">false</value>
+                              <value name="is_global">false</value>
+                            </record>
+                          </array>
+                          <value name="rec_closed">true</value>
+                          <value name="modifiable">true</value>
+                        </record>
+                      </array>
+                      <value name="modifiable">true</value>
+                    </record>
+                  </array>
+                  <value name="modifiable">true</value>
+                </record>
+                <record javaclass="com.wm.util.Values">
+                  <value name="node_type">record</value>
+                  <value name="node_subtype">unknown</value>
+                  <value name="node_comment"></value>
+                  <value name="is_public">false</value>
+                  <value name="field_name">error</value>
+                  <value name="field_type">record</value>
+                  <value name="field_dim">0</value>
+                  <value name="field_opt">true</value>
+                  <value name="wrapper_type">IData</value>
+                  <value name="nillable">true</value>
+                  <value name="form_qualified">false</value>
+                  <value name="is_global">false</value>
+                  <array name="rec_fields" type="record" depth="1">
+                    <record javaclass="com.wm.util.Values">
+                      <value name="node_type">record</value>
+                      <value name="node_subtype">unknown</value>
+                      <value name="node_comment"></value>
+                      <record name="node_hints" javaclass="com.wm.util.Values">
+                        <value name="field_usereditable">true</value>
+                        <value name="field_largerEditor">false</value>
+                        <value name="field_password">false</value>
+                      </record>
+                      <value name="is_public">false</value>
+                      <value name="field_name">error_code</value>
+                      <value name="field_type">string</value>
+                      <value name="field_dim">0</value>
+                      <value name="field_opt">true</value>
+                      <array name="field_options" type="value" depth="1">
+                      </array>
+                      <value name="nillable">true</value>
+                      <value name="form_qualified">false</value>
+                      <value name="is_global">false</value>
+                    </record>
+                    <record javaclass="com.wm.util.Values">
+                      <value name="node_type">record</value>
+                      <value name="node_subtype">unknown</value>
+                      <value name="node_comment"></value>
+                      <record name="node_hints" javaclass="com.wm.util.Values">
+                        <value name="field_largerEditor">false</value>
+                        <value name="field_password">false</value>
+                      </record>
+                      <value name="is_public">false</value>
+                      <value name="field_name">status</value>
+                      <value name="field_type">object</value>
+                      <value name="field_dim">0</value>
+                      <value name="field_opt">true</value>
+                      <value name="wrapper_type">java.lang.Long</value>
+                      <value name="nillable">true</value>
+                      <value name="form_qualified">false</value>
+                      <value name="is_global">false</value>
+                    </record>
+                    <record javaclass="com.wm.util.Values">
+                      <value name="node_type">record</value>
+                      <value name="node_subtype">unknown</value>
+                      <value name="node_comment"></value>
+                      <record name="node_hints" javaclass="com.wm.util.Values">
+                        <value name="field_usereditable">true</value>
+                        <value name="field_largerEditor">false</value>
+                        <value name="field_password">false</value>
+                      </record>
+                      <value name="is_public">false</value>
+                      <value name="field_name">message</value>
+                      <value name="field_type">string</value>
+                      <value name="field_dim">0</value>
+                      <value name="field_opt">true</value>
+                      <array name="field_options" type="value" depth="1">
+                      </array>
+                      <value name="nillable">true</value>
+                      <value name="form_qualified">false</value>
+                      <value name="is_global">false</value>
+                    </record>
+                    <record javaclass="com.wm.util.Values">
+                      <value name="node_type">record</value>
+                      <value name="node_subtype">unknown</value>
+                      <value name="node_comment"></value>
+                      <record name="node_hints" javaclass="com.wm.util.Values">
+                        <value name="field_usereditable">true</value>
+                        <value name="field_largerEditor">false</value>
+                        <value name="field_password">false</value>
+                      </record>
+                      <value name="is_public">false</value>
+                      <value name="field_name">type</value>
+                      <value name="field_type">string</value>
+                      <value name="field_dim">0</value>
+                      <value name="field_opt">true</value>
+                      <array name="field_options" type="value" depth="1">
+                      </array>
+                      <value name="nillable">true</value>
+                      <value name="form_qualified">false</value>
+                      <value name="is_global">false</value>
+                    </record>
+                    <record javaclass="com.wm.util.Values">
+                      <value name="node_type">record</value>
+                      <value name="node_subtype">unknown</value>
+                      <value name="node_comment"></value>
+                      <record name="node_hints" javaclass="com.wm.util.Values">
+                        <value name="field_usereditable">true</value>
+                        <value name="field_largerEditor">false</value>
+                        <value name="field_password">false</value>
+                      </record>
+                      <value name="is_public">false</value>
+                      <value name="field_name">title</value>
+                      <value name="field_type">string</value>
+                      <value name="field_dim">0</value>
+                      <value name="field_opt">true</value>
+                      <array name="field_options" type="value" depth="1">
+                      </array>
+                      <value name="nillable">true</value>
+                      <value name="form_qualified">false</value>
+                      <value name="is_global">false</value>
+                    </record>
+                    <record javaclass="com.wm.util.Values">
+                      <value name="node_type">record</value>
+                      <value name="node_subtype">unknown</value>
+                      <value name="node_comment"></value>
+                      <record name="node_hints" javaclass="com.wm.util.Values">
+                        <value name="field_usereditable">true</value>
+                        <value name="field_largerEditor">false</value>
+                        <value name="field_password">false</value>
+                      </record>
+                      <value name="is_public">false</value>
+                      <value name="field_name">detail</value>
+                      <value name="field_type">string</value>
+                      <value name="field_dim">0</value>
+                      <value name="field_opt">true</value>
+                      <array name="field_options" type="value" depth="1">
+                      </array>
+                      <value name="nillable">true</value>
+                      <value name="form_qualified">false</value>
+                      <value name="is_global">false</value>
+                    </record>
+                    <record javaclass="com.wm.util.Values">
+                      <value name="node_type">record</value>
+                      <value name="node_subtype">unknown</value>
+                      <value name="node_comment"></value>
+                      <record name="node_hints" javaclass="com.wm.util.Values">
+                        <value name="field_largerEditor">false</value>
+                        <value name="field_password">false</value>
+                      </record>
+                      <value name="is_public">false</value>
+                      <value name="field_name">additionalDetails</value>
+                      <value name="field_type">record</value>
+                      <value name="field_dim">0</value>
+                      <value name="field_opt">true</value>
+                      <value name="wrapper_type">IData</value>
+                      <value name="nillable">true</value>
+                      <value name="form_qualified">false</value>
+                      <value name="is_global">false</value>
+                      <array name="rec_fields" type="record" depth="1">
+                        <record javaclass="com.wm.util.Values">
+                          <value name="node_type">record</value>
+                          <value name="node_subtype">unknown</value>
+                          <value name="node_comment"></value>
+                          <record name="node_hints" javaclass="com.wm.util.Values">
+                            <value name="field_usereditable">true</value>
+                            <value name="field_largerEditor">false</value>
+                            <value name="field_password">false</value>
+                          </record>
+                          <value name="is_public">false</value>
+                          <value name="field_name">requestId</value>
+                          <value name="field_type">string</value>
+                          <value name="field_dim">0</value>
+                          <value name="field_opt">true</value>
+                          <array name="field_options" type="value" depth="1">
+                          </array>
+                          <value name="nillable">true</value>
+                          <value name="form_qualified">false</value>
+                          <value name="is_global">false</value>
+                        </record>
+                      </array>
+                      <value name="rec_closed">true</value>
+                      <value name="modifiable">true</value>
+                    </record>
+                    <record javaclass="com.wm.util.Values">
+                      <value name="node_type">record</value>
+                      <value name="node_subtype">unknown</value>
+                      <value name="node_comment"></value>
+                      <record name="node_hints" javaclass="com.wm.util.Values">
+                        <value name="field_largerEditor">false</value>
+                        <value name="field_password">false</value>
+                      </record>
+                      <value name="is_public">false</value>
+                      <value name="field_name">schemaErrors</value>
+                      <value name="field_type">record</value>
+                      <value name="field_dim">0</value>
+                      <value name="field_opt">true</value>
+                      <value name="wrapper_type">IData</value>
+                      <value name="nillable">true</value>
+                      <value name="form_qualified">false</value>
+                      <value name="is_global">false</value>
+                      <array name="rec_fields" type="record" depth="1">
+                      </array>
+                      <value name="rec_closed">true</value>
+                      <value name="modifiable">true</value>
+                    </record>
+                    <record javaclass="com.wm.util.Values">
+                      <value name="node_type">record</value>
+                      <value name="node_subtype">unknown</value>
+                      <value name="node_comment"></value>
+                      <record name="node_hints" javaclass="com.wm.util.Values">
+                        <value name="field_largerEditor">false</value>
+                        <value name="field_password">false</value>
+                      </record>
+                      <value name="is_public">false</value>
+                      <value name="field_name">report</value>
+                      <value name="field_type">record</value>
+                      <value name="field_dim">0</value>
+                      <value name="field_opt">true</value>
+                      <value name="wrapper_type">IData</value>
+                      <value name="nillable">true</value>
+                      <value name="form_qualified">false</value>
+                      <value name="is_global">false</value>
+                      <array name="rec_fields" type="record" depth="1">
+                        <record javaclass="com.wm.util.Values">
+                          <value name="node_type">record</value>
+                          <value name="node_subtype">unknown</value>
+                          <value name="node_comment"></value>
+                          <record name="node_hints" javaclass="com.wm.util.Values">
+                            <value name="field_usereditable">true</value>
+                            <value name="field_largerEditor">false</value>
+                            <value name="field_password">false</value>
+                          </record>
+                          <value name="is_public">false</value>
+                          <value name="field_name">message</value>
+                          <value name="field_type">string</value>
+                          <value name="field_dim">0</value>
+                          <value name="field_opt">true</value>
+                          <array name="field_options" type="value" depth="1">
+                          </array>
+                          <value name="nillable">true</value>
+                          <value name="form_qualified">false</value>
+                          <value name="is_global">false</value>
+                        </record>
+                      </array>
+                      <value name="rec_closed">true</value>
+                      <value name="modifiable">true</value>
+                    </record>
+                  </array>
+                  <value name="modifiable">true</value>
+                </record>
+              </array>
+              <value name="modifiable">true</value>
+            </record>
+            <record javaclass="com.wm.util.Values">
+              <value name="node_type">record</value>
+              <value name="node_subtype">unknown</value>
+              <value name="is_public">false</value>
+              <value name="field_name">fault</value>
+              <value name="field_type">record</value>
+              <value name="field_dim">0</value>
+              <value name="field_opt">true</value>
+              <value name="nillable">true</value>
+              <value name="form_qualified">false</value>
+              <value name="is_global">false</value>
+              <array name="rec_fields" type="record" depth="1">
+                <record javaclass="com.wm.util.Values">
+                  <value name="node_type">record</value>
+                  <value name="node_subtype">unknown</value>
+                  <value name="node_comment"></value>
+                  <record name="node_hints" javaclass="com.wm.util.Values">
+                    <value name="field_largerEditor">false</value>
+                    <value name="field_password">false</value>
+                  </record>
+                  <value name="is_public">false</value>
+                  <value name="field_name">code</value>
+                  <value name="field_type">record</value>
+                  <value name="field_dim">0</value>
+                  <value name="field_opt">true</value>
+                  <value name="nillable">false</value>
+                  <value name="form_qualified">false</value>
+                  <value name="is_global">false</value>
+                  <array name="rec_fields" type="record" depth="1">
+                    <record javaclass="com.wm.util.Values">
+                      <value name="node_type">record</value>
+                      <value name="node_subtype">unknown</value>
+                      <value name="node_comment"></value>
+                      <record name="node_hints" javaclass="com.wm.util.Values">
+                        <value name="field_usereditable">true</value>
+                        <value name="field_largerEditor">false</value>
+                        <value name="field_password">false</value>
+                      </record>
+                      <value name="is_public">false</value>
+                      <value name="field_name">namespaceName</value>
+                      <value name="field_type">string</value>
+                      <value name="field_dim">0</value>
+                      <value name="field_opt">true</value>
+                      <value name="nillable">false</value>
+                      <value name="form_qualified">false</value>
+                      <value name="is_global">false</value>
+                    </record>
+                    <record javaclass="com.wm.util.Values">
+                      <value name="node_type">record</value>
+                      <value name="node_subtype">unknown</value>
+                      <value name="node_comment"></value>
+                      <record name="node_hints" javaclass="com.wm.util.Values">
+                        <value name="field_usereditable">true</value>
+                        <value name="field_largerEditor">false</value>
+                        <value name="field_password">false</value>
+                      </record>
+                      <value name="is_public">false</value>
+                      <value name="field_name">localName</value>
+                      <value name="field_type">string</value>
+                      <value name="field_dim">0</value>
+                      <value name="nillable">false</value>
+                      <value name="form_qualified">false</value>
+                      <value name="is_global">false</value>
+                    </record>
+                    <record javaclass="com.wm.util.Values">
+                      <value name="node_type">record</value>
+                      <value name="node_subtype">unknown</value>
+                      <value name="node_comment"></value>
+                      <record name="node_hints" javaclass="com.wm.util.Values">
+                        <value name="field_largerEditor">false</value>
+                        <value name="field_password">false</value>
+                      </record>
+                      <value name="is_public">false</value>
+                      <value name="field_name">subCodes</value>
+                      <value name="field_type">record</value>
+                      <value name="field_dim">1</value>
+                      <value name="field_opt">true</value>
+                      <value name="nillable">false</value>
+                      <value name="form_qualified">false</value>
+                      <value name="is_global">false</value>
+                      <value name="is_soap_array_encoding_used">false</value>
+                      <array name="rec_fields" type="record" depth="1">
+                        <record javaclass="com.wm.util.Values">
+                          <value name="node_type">record</value>
+                          <value name="node_subtype">unknown</value>
+                          <value name="node_comment"></value>
+                          <record name="node_hints" javaclass="com.wm.util.Values">
+                            <value name="field_usereditable">true</value>
+                            <value name="field_largerEditor">false</value>
+                            <value name="field_password">false</value>
+                          </record>
+                          <value name="is_public">false</value>
+                          <value name="field_name">namespaceName</value>
+                          <value name="field_type">string</value>
+                          <value name="field_dim">0</value>
+                          <value name="field_opt">true</value>
+                          <value name="nillable">false</value>
+                          <value name="form_qualified">false</value>
+                          <value name="is_global">false</value>
+                        </record>
+                        <record javaclass="com.wm.util.Values">
+                          <value name="node_type">record</value>
+                          <value name="node_subtype">unknown</value>
+                          <value name="node_comment"></value>
+                          <record name="node_hints" javaclass="com.wm.util.Values">
+                            <value name="field_usereditable">true</value>
+                            <value name="field_largerEditor">false</value>
+                            <value name="field_password">false</value>
+                          </record>
+                          <value name="is_public">false</value>
+                          <value name="field_name">localName</value>
+                          <value name="field_type">string</value>
+                          <value name="field_dim">0</value>
+                          <value name="nillable">false</value>
+                          <value name="form_qualified">false</value>
+                          <value name="is_global">false</value>
+                        </record>
+                      </array>
+                      <value name="rec_closed">true</value>
+                      <value name="modifiable">true</value>
+                    </record>
+                  </array>
+                  <value name="rec_closed">true</value>
+                  <value name="modifiable">true</value>
+                </record>
+                <record javaclass="com.wm.util.Values">
+                  <value name="node_type">record</value>
+                  <value name="node_subtype">unknown</value>
+                  <value name="node_comment"></value>
+                  <record name="node_hints" javaclass="com.wm.util.Values">
+                    <value name="field_largerEditor">false</value>
+                    <value name="field_password">false</value>
+                  </record>
+                  <value name="is_public">false</value>
+                  <value name="field_name">reasons</value>
+                  <value name="field_type">record</value>
+                  <value name="field_dim">1</value>
+                  <value name="field_opt">true</value>
+                  <value name="nillable">false</value>
+                  <value name="form_qualified">false</value>
+                  <value name="is_global">false</value>
+                  <value name="is_soap_array_encoding_used">false</value>
+                  <array name="rec_fields" type="record" depth="1">
+                    <record javaclass="com.wm.util.Values">
+                      <value name="node_type">record</value>
+                      <value name="node_subtype">unknown</value>
+                      <value name="node_comment"></value>
+                      <record name="node_hints" javaclass="com.wm.util.Values">
+                        <value name="field_usereditable">true</value>
+                        <value name="field_largerEditor">false</value>
+                        <value name="field_password">false</value>
+                      </record>
+                      <value name="is_public">false</value>
+                      <value name="field_name">@lang</value>
+                      <value name="field_type">string</value>
+                      <value name="field_dim">0</value>
+                      <value name="field_opt">true</value>
+                      <value name="nillable">false</value>
+                      <value name="form_qualified">false</value>
+                      <value name="is_global">false</value>
+                    </record>
+                    <record javaclass="com.wm.util.Values">
+                      <value name="node_type">record</value>
+                      <value name="node_subtype">unknown</value>
+                      <value name="node_comment"></value>
+                      <record name="node_hints" javaclass="com.wm.util.Values">
+                        <value name="field_usereditable">true</value>
+                        <value name="field_largerEditor">false</value>
+                        <value name="field_password">false</value>
+                      </record>
+                      <value name="is_public">false</value>
+                      <value name="field_name">*body</value>
+                      <value name="field_type">string</value>
+                      <value name="field_dim">0</value>
+                      <value name="nillable">false</value>
+                      <value name="form_qualified">false</value>
+                      <value name="is_global">false</value>
+                    </record>
+                  </array>
+                  <value name="rec_closed">true</value>
+                  <value name="modifiable">true</value>
+                </record>
+                <record javaclass="com.wm.util.Values">
+                  <value name="node_type">record</value>
+                  <value name="node_subtype">unknown</value>
+                  <value name="node_comment"></value>
+                  <record name="node_hints" javaclass="com.wm.util.Values">
+                    <value name="field_usereditable">true</value>
+                    <value name="field_largerEditor">false</value>
+                    <value name="field_password">false</value>
+                  </record>
+                  <value name="is_public">false</value>
+                  <value name="field_name">node</value>
+                  <value name="field_type">string</value>
+                  <value name="field_dim">0</value>
+                  <value name="field_opt">true</value>
+                  <array name="field_options" type="value" depth="1">
+                  </array>
+                  <value name="nillable">false</value>
+                  <value name="form_qualified">false</value>
+                  <value name="is_global">false</value>
+                </record>
+                <record javaclass="com.wm.util.Values">
+                  <value name="node_type">record</value>
+                  <value name="node_subtype">unknown</value>
+                  <value name="node_comment"></value>
+                  <record name="node_hints" javaclass="com.wm.util.Values">
+                    <value name="field_usereditable">true</value>
+                    <value name="field_largerEditor">false</value>
+                    <value name="field_password">false</value>
+                  </record>
+                  <value name="is_public">false</value>
+                  <value name="field_name">role</value>
+                  <value name="field_type">string</value>
+                  <value name="field_dim">0</value>
+                  <value name="field_opt">true</value>
+                  <array name="field_options" type="value" depth="1">
+                  </array>
+                  <value name="nillable">false</value>
+                  <value name="form_qualified">false</value>
+                  <value name="is_global">false</value>
+                </record>
+                <record javaclass="com.wm.util.Values">
+                  <value name="node_type">record</value>
+                  <value name="node_subtype">unknown</value>
+                  <value name="node_comment"></value>
+                  <record name="node_hints" javaclass="com.wm.util.Values">
+                    <value name="field_largerEditor">false</value>
+                    <value name="field_password">false</value>
+                  </record>
+                  <value name="is_public">false</value>
+                  <value name="field_name">detail</value>
+                  <value name="field_type">record</value>
+                  <value name="field_dim">0</value>
+                  <value name="field_opt">true</value>
+                  <value name="nillable">false</value>
+                  <value name="form_qualified">false</value>
+                  <value name="is_global">false</value>
+                  <array name="rec_fields" type="record" depth="1">
+                  </array>
+                  <value name="modifiable">true</value>
+                </record>
+              </array>
+              <value name="modifiable">true</value>
+            </record>
+          </array>
+          <value name="modifiable">true</value>
+        </record>
+      </array>
+      <value name="modifiable">true</value>
+    </record>
+  </record>
+  <value name="node_comment"></value>
+  <value name="stateless">yes</value>
+  <value name="caching">no</value>
+  <value name="prefetch">no</value>
+  <value name="cache_ttl">15</value>
+  <value name="prefetch_level">1</value>
+  <value name="audit_level">off</value>
+  <value name="check_internal_acls">no</value>
+  <value name="icontext_policy">$null</value>
+  <value name="system_service">yes</value>
+  <value name="retry_max">0</value>
+  <value name="retry_interval">0</value>
+  <value name="svc_in_validator_options">none</value>
+  <value name="svc_out_validator_options">none</value>
+  <value name="auditoption">0</value>
+  <null name="auditfields_input"/>
+  <null name="auditfields_output"/>
+  <record name="auditsettings" javaclass="com.wm.util.Values">
+    <value name="document_data">0</value>
+    <value name="startExecution">false</value>
+    <value name="stopExecution">false</value>
+    <value name="onError">true</value>
+  </record>
+  <record name="circuitbreakersettings" javaclass="com.wm.util.Values">
+    <value name="enabled">false</value>
+    <value name="failureEvent">1</value>
+    <value name="timeoutPeriod">60</value>
+    <value name="failureThreshold">5</value>
+    <value name="failurePeriod">60</value>
+    <value name="openAction">1</value>
+    <null name="serviceToInvoke"/>
+    <value name="resetPeriod">300</value>
+    <value name="cancelThreadOnTimeout">false</value>
+  </record>
+  <array name="allowedHTTPMethods" type="value" depth="1">
+    <value>HEAD</value>
+    <value>DELETE</value>
+    <value>POST</value>
+    <value>GET</value>
+    <value>OPTIONS</value>
+    <value>PUT</value>
+    <value>PATCH</value>
+  </array>
+  <value name="pipeline_option">1</value>
+  <null name="originURI"/>
+  <value name="modifiable">true</value>
+  <value name="is_public">false</value>
+  <value name="node_type">service</value>
+  <value name="cloudNodeVersion">1</value>
+  <record name="cloudNodeProperties" javaclass="com.wm.util.Values">
+    <value name="interactionName">stats</value>
+    <value name="serviceName">schemaRegistryAPI</value>
+    <value name="virtualServiceName">WmCloudStreams.RestVS</value>
+    <value name="connectionName">connections:adobe</value>
+    <value name="connectionType">sagcloud</value>
+    <value name="connectorID">com.softwareag.cloudstreams.adobe.experienceplatform_v1</value>
+    <record name="customData" javaclass="com.wm.util.Values">
+      <array name="customInputHeaders" type="record" depth="1">
+        <record javaclass="com.wm.util.Values">
+          <value name="nsName">x-api-key</value>
+          <value name="active">true</value>
+          <value name="mandatory">true</value>
+          <value name="defaultValue">jwt.cx.clientId</value>
+          <value name="fixed">true</value>
+        </record>
+        <record javaclass="com.wm.util.Values">
+          <value name="nsName">x-gw-ims-org-id</value>
+          <value name="active">true</value>
+          <value name="mandatory">true</value>
+          <value name="defaultValue">oauth_v20.iss</value>
+          <value name="fixed">true</value>
+        </record>
+        <record javaclass="com.wm.util.Values">
+          <value name="nsName">Content-Type</value>
+          <value name="active">true</value>
+          <value name="mandatory">true</value>
+          <value name="defaultValue">application/json</value>
+          <value name="fixed">false</value>
+        </record>
+        <record javaclass="com.wm.util.Values">
+          <value name="nsName">x-sandbox-name</value>
+          <value name="active">true</value>
+          <value name="mandatory">true</value>
+          <value name="defaultValue">cx.sanbox_name</value>
+          <value name="fixed">true</value>
+        </record>
+      </array>
+      <array name="customOutputHeaders" type="record" depth="1">
+      </array>
+      <array name="customParameters" type="record" depth="1">
+      </array>
+      <array name="customInputTypeSetting" type="record" depth="1">
+      </array>
+      <array name="customOutputTypeSetting" type="record" depth="1">
+      </array>
+      <record name="requestProcessing" javaclass="com.wm.util.Values">
+        <null name="messageFormatterType"/>
+        <null name="builderType"/>
+      </record>
+      <record name="responseProcessing" javaclass="com.wm.util.Values">
+        <value name="messageFormatterType">application/octet+idataoref</value>
+        <value name="builderType">application/json</value>
+      </record>
+      <value name="method">GET</value>
+      <value name="path">/data/foundation/schemaregistry/stats</value>
+      <value name="restSignatureStyle">WITH_DOCUMENT_ROOT</value>
+      <record name="partsContainer" javaclass="com.wm.util.Values">
+        <array name="parts" type="record" depth="1">
+        </array>
+      </record>
+    </record>
+  </record>
+</Values>
